@@ -28,28 +28,24 @@ const FEATURES = [
   {
     image: osKernel,
     kicker: "watch it happen",
-    icon: "M4 6h16M4 12h10M4 18h6",
     title: "Animated diagrams",
     text: "Systems drawn live, frame by frame — every animation step synced to the exact line of code that causes it.",
   },
   {
     image: tfAttention,
     kicker: "code that teaches",
-    icon: "M8 6l-5 6 5 6M16 6l5 6-5 6",
     title: "Synced code",
     text: "Real code on the left, what it builds on the right. The highlighted line is always the one you are watching.",
   },
   {
     image: tfWords,
     kicker: "no leaps of faith",
-    icon: "M4 20l5-5 4 4 7-9",
     title: "First-principles steps",
     text: "No jumping ahead. Every concept is rebuilt from its smallest idea, one small step at a time.",
   },
   {
     image: osInterrupts,
     kicker: "quick notes & jargon decoder",
-    icon: "M12 3a7 7 0 00-4 12.7V18h8v-2.3A7 7 0 0012 3zM10 21h4",
     title: "Every term explained",
     text: "Short notes track each step, and every abbreviation is one click away from a plain-English definition.",
   },
@@ -70,11 +66,6 @@ const SKILLS = [
     title: "Animations",
     text: "Concepts drawn live, frame by frame, synced to the exact line of code that causes them.",
     icon: "M6 4l14 8-14 8V4z",
-  },
-  {
-    title: "Theory",
-    text: "Blog-style chapter recaps and a jargon decoder give you the depth behind every visual.",
-    icon: "M4 5h9a3 3 0 013 3v11a3 3 0 00-3-3H4V5zM20 5h-4v11h4V5z",
   },
   {
     title: "Interview Questions",
@@ -145,16 +136,11 @@ export function Landing({ onEnter }: LandingProps) {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, delay: (i % 2) * 0.12 }}
             >
-              <div className="feature-head">
-                <span className="feature-icon">
-                  <FeatureIcon d={f.icon} />
-                </span>
-                <span className="feature-kicker">{f.kicker}</span>
-              </div>
               <div className="feature-shot">
                 <img src={f.image} alt={f.title} loading="lazy" />
               </div>
               <div className="feature-body">
+                <p className="landing-section-kicker">{f.kicker}</p>
                 <h3>{f.title}</h3>
                 <p>{f.text}</p>
               </div>
