@@ -2,7 +2,7 @@ import type { Language, NarrationSegment } from "../types";
 
 /**
  * Pluggable text-to-speech provider. A real implementation (e.g. ElevenLabs)
- * synthesizes `segment.text[language]` and returns a playable audio URL.
+ * synthesizes `segment.text` in the requested language and returns a playable audio URL.
  */
 export interface VoiceProvider {
   readonly name: string;

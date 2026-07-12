@@ -1,13 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { glossary, type GlossaryTerm } from "../data/glossary";
-import type { Language } from "../types";
 
 interface GlossaryPaneProps {
   termIds: string[];
   /** Terms relevant to the current step get a subtle accent. */
   activeIds?: string[];
-  language: Language;
   /**
    * Future extension point: wire an AI assistant so a learner can ask
    * follow-up questions about a term ("explain APIC like I'm five").
@@ -19,7 +17,6 @@ interface GlossaryPaneProps {
 export function GlossaryPane({
   termIds,
   activeIds = [],
-  language,
   onAskAi,
 }: GlossaryPaneProps) {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -58,7 +55,7 @@ export function GlossaryPane({
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
                   >
-                    <p>{t.definition[language]}</p>
+                    <p>{t.definition}</p>
                     {onAskAi && (
                       <button className="ask-ai" onClick={() => onAskAi(t)}>
                         ✦ ask AI about this

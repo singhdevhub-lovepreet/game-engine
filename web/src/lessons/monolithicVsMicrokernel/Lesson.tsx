@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { GlossaryPane } from "../../components/GlossaryPane";
 import { useNarration } from "../../narration/useNarration";
-import type { Language } from "../../types";
 import { Scene } from "./Scene";
 import { glossaryIds, scoreRows, steps } from "./steps";
 import type { SceneState } from "./steps";
@@ -20,10 +19,6 @@ const SCENE_ORDER: SceneState[] = [
   "spectrum",
   "done",
 ];
-
-interface LessonProps {
-  language: Language;
-}
 
 function Scorecard({ scene }: { scene: SceneState }) {
   const idx = SCENE_ORDER.indexOf(scene);
@@ -62,10 +57,10 @@ function Scorecard({ scene }: { scene: SceneState }) {
   );
 }
 
-export function MonolithicVsMicrokernelLesson({ language }: LessonProps) {
+export function MonolithicVsMicrokernelLesson() {
   const [stepIndex, setStepIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const { caption, speak } = useNarration(language);
+  const { caption, speak } = useNarration();
   const step = steps[stepIndex];
 
   useEffect(() => {
@@ -131,7 +126,6 @@ export function MonolithicVsMicrokernelLesson({ language }: LessonProps) {
           <GlossaryPane
             termIds={glossaryIds}
             activeIds={step.terms}
-            language={language}
           />
         </aside>
       </div>

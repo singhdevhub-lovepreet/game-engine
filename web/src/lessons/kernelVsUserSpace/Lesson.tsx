@@ -3,20 +3,15 @@ import { useCallback, useEffect, useState } from "react";
 import { CodePane } from "../../components/CodePane";
 import { GlossaryPane } from "../../components/GlossaryPane";
 import { useNarration } from "../../narration/useNarration";
-import type { Language } from "../../types";
 import { Scene } from "./Scene";
 import { cCode, glossaryIds, steps } from "./steps";
 
 const STEP_MS = 6500;
 
-interface LessonProps {
-  language: Language;
-}
-
-export function KernelVsUserSpaceLesson({ language }: LessonProps) {
+export function KernelVsUserSpaceLesson() {
   const [stepIndex, setStepIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const { caption, speak } = useNarration(language);
+  const { caption, speak } = useNarration();
   const step = steps[stepIndex];
 
   useEffect(() => {
@@ -82,7 +77,6 @@ export function KernelVsUserSpaceLesson({ language }: LessonProps) {
           <GlossaryPane
             termIds={glossaryIds}
             activeIds={step.terms}
-            language={language}
           />
         </aside>
       </div>
