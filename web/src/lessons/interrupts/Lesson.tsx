@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { CodePane } from "../../components/CodePane";
 import { GlossaryPane } from "../../components/GlossaryPane";
+import { SpeedControl } from "../../components/SpeedControl";
 import { useNarration } from "../../narration/useNarration";
 import { Scene } from "./Scene";
 import { cCode, glossaryIds, steps } from "./steps";
@@ -11,6 +12,7 @@ const STEP_MS = 6500;
 export function InterruptsLesson() {
   const [stepIndex, setStepIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
   const { caption, speak } = useNarration();
   const step = steps[stepIndex];
 
@@ -28,9 +30,9 @@ export function InterruptsLesson() {
         }
         return i + 1;
       });
-    }, STEP_MS);
+    }, STEP_MS / speed);
     return () => clearInterval(t);
-  }, [playing]);
+  }, [playing, speed]);
 
   const goto = useCallback((i: number) => {
     setStepIndex(Math.min(Math.max(i, 0), steps.length - 1));
@@ -56,6 +58,7 @@ export function InterruptsLesson() {
           >
             Next →
           </button>
+          <SpeedControl speed={speed} onChange={setSpeed} />
         </div>
       </header>
 
