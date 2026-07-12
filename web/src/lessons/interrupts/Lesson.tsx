@@ -1,10 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { CodePane } from "../../components/CodePane";
+import { GlossaryPane } from "../../components/GlossaryPane";
 import { useNarration } from "../../narration/useNarration";
 import type { Language } from "../../types";
 import { Scene } from "./Scene";
-import { cCode, steps } from "./steps";
+import { cCode, glossaryIds, steps } from "./steps";
 
 const STEP_MS = 6500;
 
@@ -78,6 +79,11 @@ export function InterruptsLesson({ language }: LessonProps) {
                 ),
             )}
           </ul>
+          <GlossaryPane
+            termIds={glossaryIds}
+            activeIds={step.terms}
+            language={language}
+          />
         </aside>
       </div>
 

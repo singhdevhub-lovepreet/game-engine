@@ -29,11 +29,23 @@ export interface KernelLessonStep extends LessonStep {
   activeSyscall?: "open" | "read" | "write" | "close";
 }
 
+/** Terms surfaced in this lesson's jargon decoder, in teaching order. */
+export const glossaryIds = [
+  "user-mode",
+  "kernel-mode",
+  "syscall",
+  "libc",
+  "trap",
+  "fd",
+  "stdin",
+];
+
 export const steps: KernelLessonStep[] = [
   {
     id: "intro",
     codeLines: [],
     scene: "idle",
+    terms: ["user-mode", "kernel-mode"],
     narration: {
       id: "intro",
       text: {
@@ -47,6 +59,7 @@ export const steps: KernelLessonStep[] = [
     id: "user-code",
     codeLines: [4, 5],
     scene: "user-running",
+    terms: ["user-mode"],
     narration: {
       id: "user-code",
       text: {
@@ -61,6 +74,7 @@ export const steps: KernelLessonStep[] = [
     codeLines: [7],
     scene: "trap",
     activeSyscall: "open",
+    terms: ["syscall", "libc", "trap"],
     narration: {
       id: "open-trap",
       text: {
@@ -75,6 +89,7 @@ export const steps: KernelLessonStep[] = [
     codeLines: [7],
     scene: "kernel-running",
     activeSyscall: "open",
+    terms: ["kernel-mode", "fd"],
     narration: {
       id: "kernel-work",
       text: {
@@ -89,6 +104,7 @@ export const steps: KernelLessonStep[] = [
     codeLines: [7],
     scene: "return",
     activeSyscall: "open",
+    terms: ["fd", "user-mode"],
     narration: {
       id: "return",
       text: {
@@ -103,6 +119,7 @@ export const steps: KernelLessonStep[] = [
     codeLines: [9, 11],
     scene: "trap",
     activeSyscall: "read",
+    terms: ["trap", "stdin"],
     narration: {
       id: "read-write",
       text: {
@@ -116,6 +133,7 @@ export const steps: KernelLessonStep[] = [
     id: "summary",
     codeLines: [13, 14],
     scene: "done",
+    terms: ["user-mode", "kernel-mode", "syscall"],
     narration: {
       id: "summary",
       text: {

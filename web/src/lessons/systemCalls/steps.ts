@@ -32,11 +32,26 @@ export interface SystemCallsStep extends LessonStep {
   activeSyscall?: SyscallName;
 }
 
+/** Terms surfaced in this lesson's jargon decoder, in teaching order. */
+export const glossaryIds = [
+  "syscall",
+  "syscall-table",
+  "libc",
+  "trap",
+  "kernel-mode",
+  "user-mode",
+  "fork",
+  "pid",
+  "exec",
+  "handler",
+];
+
 export const steps: SystemCallsStep[] = [
   {
     id: "intro",
     codeLines: [],
     scene: "idle",
+    terms: ["syscall", "syscall-table"],
     narration: {
       id: "intro",
       text: {
@@ -51,6 +66,7 @@ export const steps: SystemCallsStep[] = [
     codeLines: [5],
     scene: "wrapper",
     activeSyscall: "write",
+    terms: ["libc", "syscall"],
     narration: {
       id: "wrapper",
       text: {
@@ -65,6 +81,7 @@ export const steps: SystemCallsStep[] = [
     codeLines: [5],
     scene: "trap",
     activeSyscall: "write",
+    terms: ["trap", "kernel-mode"],
     narration: {
       id: "trap",
       text: {
@@ -79,6 +96,7 @@ export const steps: SystemCallsStep[] = [
     codeLines: [5],
     scene: "dispatch",
     activeSyscall: "write",
+    terms: ["syscall-table", "handler"],
     narration: {
       id: "dispatch",
       text: {
@@ -93,6 +111,7 @@ export const steps: SystemCallsStep[] = [
     codeLines: [7],
     scene: "forked",
     activeSyscall: "fork",
+    terms: ["fork", "pid"],
     narration: {
       id: "fork",
       text: {
@@ -107,6 +126,7 @@ export const steps: SystemCallsStep[] = [
     codeLines: [9, 10],
     scene: "exec",
     activeSyscall: "execve",
+    terms: ["exec", "pid"],
     narration: {
       id: "exec",
       text: {
@@ -121,6 +141,7 @@ export const steps: SystemCallsStep[] = [
     codeLines: [13, 14],
     scene: "done",
     activeSyscall: "wait4",
+    terms: ["libc", "syscall", "syscall-table", "handler"],
     narration: {
       id: "summary",
       text: {

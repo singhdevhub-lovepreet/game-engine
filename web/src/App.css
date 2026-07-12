@@ -483,6 +483,113 @@ main {
   padding-bottom: 6px;
 }
 
+/* --- Glossary (jargon decoder) --- */
+.glossary {
+  border-top: 1px solid var(--bg-card-border);
+  margin-top: 4px;
+}
+
+.glossary ul {
+  list-style: none;
+  padding: 8px 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.glossary li {
+  border-left: 2px solid transparent;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 0;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.glossary li.active {
+  border-left-color: var(--accent);
+  background: var(--accent-grad);
+}
+
+.glossary-term {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 8px;
+  text-align: left;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+}
+
+.glossary-term:hover .glossary-abbr {
+  color: var(--text-primary);
+}
+
+.glossary-abbr {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  border-bottom: 1px dotted rgba(139, 92, 246, 0.4);
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+
+.glossary li.active .glossary-abbr {
+  color: var(--text-primary);
+}
+
+.glossary-full {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.glossary-chevron {
+  color: var(--text-muted);
+  font-size: 12px;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+
+.glossary-chevron.open {
+  transform: rotate(90deg);
+}
+
+.glossary-def {
+  overflow: hidden;
+}
+
+.glossary-def p {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  padding: 0 8px 8px 8px;
+}
+
+.ask-ai {
+  margin: 0 8px 10px;
+  background: none;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  color: var(--accent);
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.ask-ai:hover {
+  border-color: rgba(139, 92, 246, 0.5);
+  background: rgba(139, 92, 246, 0.08);
+}
+
 /* --- Caption bar --- */
 .caption-bar {
   display: flex;
