@@ -6,7 +6,7 @@ const AMBER = "rgba(245, 158, 11, 0.55)";
 
 function RingsFigure() {
   return (
-    <svg viewBox="0 0 360 150" className="summary-figure-svg">
+    <svg viewBox="0 0 360 162" className="summary-figure-svg">
       <rect x={20} y={14} width={320} height={54} rx={8} className="space" stroke={VIOLET} />
       <text x={34} y={32} className="tiny-label" fill={VIOLET}>
         USER · RING 3
@@ -23,18 +23,18 @@ function RingsFigure() {
       <text x={280} y={53} textAnchor="middle" className="tiny-label" fill="var(--text-secondary)">
         shell
       </text>
-      <line x1={20} y1={78} x2={340} y2={78} className="dma-line" opacity={0.6} />
-      <text x={180} y={74} textAnchor="middle" className="tiny-label" opacity={0.8}>
+      <text x={180} y={82} textAnchor="middle" className="tiny-label" opacity={0.8}>
         traps only: syscalls · interrupts
       </text>
-      <rect x={20} y={88} width={320} height={40} rx={8} className="space" stroke={AMBER} />
-      <text x={34} y={106} className="tiny-label" fill={AMBER}>
+      <line x1={20} y1={90} x2={340} y2={90} className="dma-line" opacity={0.6} />
+      <rect x={20} y={100} width={320} height={40} rx={8} className="space" stroke={AMBER} />
+      <text x={34} y={118} className="tiny-label" fill={AMBER}>
         KERNEL · RING 0
       </text>
-      <text x={180} y={120} textAnchor="middle" className="tiny-label" fill="var(--text-secondary)">
+      <text x={180} y={132} textAnchor="middle" className="tiny-label" fill="var(--text-secondary)">
         scheduler · memory · drivers · file system
       </text>
-      <text x={180} y={144} textAnchor="middle" className="tiny-label" opacity={0.7}>
+      <text x={180} y={156} textAnchor="middle" className="tiny-label" opacity={0.7}>
         hardware
       </text>
     </svg>
@@ -43,15 +43,15 @@ function RingsFigure() {
 
 function PathFigure({ stops, color }: { stops: string[]; color: string }) {
   const w = 360;
-  const step = (w - 40) / (stops.length - 1);
+  const step = (w - 60) / (stops.length - 1);
   return (
     <svg viewBox={`0 0 ${w} 70`} className="summary-figure-svg">
-      <line x1={20} y1={28} x2={w - 20} y2={28} className="dma-line" opacity={0.5} />
+      <line x1={30} y1={28} x2={w - 30} y2={28} className="dma-line" opacity={0.5} />
       {stops.map((s, i) => (
         <g key={s}>
-          <circle cx={20 + i * step} cy={28} r={4} fill={color} />
+          <circle cx={30 + i * step} cy={28} r={4} fill={color} />
           <text
-            x={20 + i * step}
+            x={30 + i * step}
             y={i % 2 === 0 ? 16 : 48}
             textAnchor="middle"
             className="tiny-label"
@@ -86,8 +86,11 @@ function MonoVsMicroFigure() {
       <text x={265} y={30} textAnchor="middle" className="tiny-label" fill={VIOLET}>
         MICROKERNEL
       </text>
-      <text x={265} y={52} textAnchor="middle" className="tiny-label" fill="var(--text-secondary)">
-        app · FS server · driver server
+      <text x={265} y={48} textAnchor="middle" className="tiny-label" fill="var(--text-secondary)">
+        app · FS server
+      </text>
+      <text x={265} y={62} textAnchor="middle" className="tiny-label" fill="var(--text-secondary)">
+        driver server
       </text>
       <line x1={210} y1={78} x2={320} y2={78} className="dma-line" opacity={0.6} />
       <text x={265} y={96} textAnchor="middle" className="tiny-label" fill="var(--text-secondary)">
