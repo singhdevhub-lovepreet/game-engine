@@ -6,6 +6,10 @@ import torch.nn.functional as F
 tokens = ["the", "bank", "of", "the", "river"]
 x = embed(tokens)               # (5, d) one row per token
 
+# naive idea: compare raw embeddings directly
+sim = x[1] @ x[4]               # bank . river -> one number
+raw = x @ x.T                   # all pairs - frozen & symmetric
+
 Wq = torch.nn.Linear(d, d_k, bias=False)
 Wk = torch.nn.Linear(d, d_k, bias=False)
 Wv = torch.nn.Linear(d, d_k, bias=False)
@@ -23,7 +27,10 @@ out = A @ V                     # contextual embeddings`;
 
 export type SceneState =
   | "tokens"
-  | "embeddings"
+  | "embed-one"
+  | "dot-two"
+  | "raw-row"
+  | "raw-problem"
   | "projections"
   | "qkv"
   | "scores"
@@ -41,11 +48,11 @@ export interface SelfAttentionStep extends LessonStep {
 export const glossaryIds = [
   "token",
   "embedding",
+  "dot-product",
   "linear-layer",
   "query",
   "key",
   "value",
-  "dot-product",
   "sqrt-dk",
   "softmax",
   "attention-weights",
@@ -60,35 +67,68 @@ export const steps: SelfAttentionStep[] = [
     terms: ["token"],
     narration: {
       id: "intro",
-      text: "Read the sentence 'the bank of the river'. You instantly know this bank holds water, not money — because you looked at the words around it. Self-attention is the mechanism that lets a model do exactly that: let every word look at every other word.",
+      text: "Read the sentence 'the bank of the river'. You instantly know this bank holds water, not money — because you looked at the words around it. Self-attention is the mechanism that lets a model do the same: let every word look at every other word.",
     },
     note: "'bank' is ambiguous alone; its neighbours disambiguate it.",
   },
   {
-    id: "embeddings",
+    id: "embed-one",
     codeLines: [4, 5],
-    scene: "embeddings",
+    scene: "embed-one",
     terms: ["token", "embedding"],
     narration: {
-      id: "embeddings",
-      text: "First each token becomes an embedding — a vector of numbers standing in for its meaning. But a lookup table is static: 'bank' gets the exact same vector next to 'river' as next to 'money'. That is the problem attention has to fix.",
+      id: "embed-one",
+      text: "Quick recap from Foundations: to a model, 'bank' is an embedding — a list of numbers looked up from the embedding table, standing in for its meaning. One word, one fixed vector. The catch: it is the same vector whether the sentence is about rivers or about money.",
     },
-    note: "Static embeddings: same vector for 'bank' in every sentence.",
+    note: "Recap: one word = one fixed embedding, blind to context.",
+  },
+  {
+    id: "dot-two",
+    codeLines: [8],
+    scene: "dot-two",
+    terms: ["embedding", "dot-product"],
+    narration: {
+      id: "dot-two",
+      text: "And we already know how to compare two vectors: the dot product. Bank's vector against river's vector — multiply pair by pair, add up, one similarity score. This is the tool from the vector-space lesson, about to become the engine of attention.",
+    },
+    note: "Dot product: two vectors in → one similarity number out.",
+  },
+  {
+    id: "raw-row",
+    codeLines: [9],
+    scene: "raw-row",
+    terms: ["dot-product"],
+    narration: {
+      id: "raw-row",
+      text: "Now dot bank's embedding against every word in the sentence — five scores. We could already use them as mixing weights and blend the neighbours into 'bank'. That is attention in its rawest form, built from nothing but embeddings and dot products.",
+    },
+    note: "bank · every word = a row of raw relevance scores.",
+  },
+  {
+    id: "raw-problem",
+    codeLines: [8, 9],
+    scene: "raw-problem",
+    terms: ["embedding", "dot-product"],
+    narration: {
+      id: "raw-problem",
+      text: "But one embedding is not enough. The same vector must ask the question, advertise the answer, and hand over its content — three different jobs. Worse: x times x-transpose is symmetric, and there is nothing here the model can learn. We need to transform the embedding.",
+    },
+    note: "One vector, three jobs — and x·xᵀ is symmetric with nothing to learn.",
   },
   {
     id: "projections",
-    codeLines: [7, 8, 9],
+    codeLines: [11, 12, 13],
     scene: "projections",
     terms: ["linear-layer"],
     narration: {
       id: "projections",
-      text: "The model learns three matrices — Wq, Wk, Wv. One embedding goes in, three different views come out. And the same three matrices are shared by every token: the model learns one way of asking, one way of advertising, one way of giving.",
+      text: "Enter the weight matrices. The model learns three of them — Wq, Wk, Wv. One embedding goes in, three specialised views come out. And the same three matrices are shared by every token: the model learns one way of asking, one way of advertising, one way of giving.",
     },
     note: "One shared Wq, Wk, Wv for all tokens — learned during training.",
   },
   {
     id: "qkv",
-    codeLines: [11, 12, 13],
+    codeLines: [15, 16, 17],
     scene: "qkv",
     terms: ["query", "key", "value"],
     narration: {
@@ -99,18 +139,18 @@ export const steps: SelfAttentionStep[] = [
   },
   {
     id: "scores",
-    codeLines: [15],
+    codeLines: [19],
     scene: "scores",
     terms: ["dot-product", "query", "key"],
     narration: {
       id: "scores",
-      text: "Every query is dotted with every key — one multiply-and-sum per pair — giving a 5-by-5 score matrix. Row 'bank' holds bank's relevance to each word in the sentence. High score between bank's query and river's key: that is the match we wanted.",
+      text: "Same dot product as before — but now between queries and keys instead of raw embeddings. Every query dotted with every key gives a 5-by-5 score matrix, and it is no longer symmetric: 'bank looking at river' can differ from 'river looking at bank'.",
     },
-    note: "Q @ K.T → n×n scores: how relevant is each token to each other.",
+    note: "Q @ K.T → n×n scores — learned, and no longer symmetric.",
   },
   {
     id: "scale",
-    codeLines: [16],
+    codeLines: [20],
     scene: "scale",
     terms: ["sqrt-dk", "softmax"],
     narration: {
@@ -121,18 +161,18 @@ export const steps: SelfAttentionStep[] = [
   },
   {
     id: "softmax",
-    codeLines: [18],
+    codeLines: [22],
     scene: "softmax",
     terms: ["softmax", "attention-weights"],
     narration: {
       id: "softmax",
-      text: "Softmax turns each row of raw scores into positive weights that sum to one. Now row 'bank' literally reads as a recipe: take 62% of river, 14% of the, 9% of of… These are the attention weights.",
+      text: "Softmax turns each row of raw scores into positive weights that sum to one. Now row 'bank' literally reads as a recipe: take 62% of river, 12% of bank, 10% of the… These are the attention weights.",
     },
     note: "softmax(row) → attention weights, each row sums to 1.",
   },
   {
     id: "mix",
-    codeLines: [20],
+    codeLines: [24],
     scene: "mix",
     terms: ["value", "contextual-embedding"],
     narration: {
@@ -143,7 +183,7 @@ export const steps: SelfAttentionStep[] = [
   },
   {
     id: "matrix",
-    codeLines: [15, 16, 18, 20],
+    codeLines: [19, 20, 22, 24],
     scene: "matrix",
     terms: ["dot-product", "softmax", "attention-weights"],
     narration: {
@@ -159,8 +199,8 @@ export const steps: SelfAttentionStep[] = [
     terms: ["query", "key", "value", "contextual-embedding"],
     narration: {
       id: "summary",
-      text: "Recap: embed the tokens, project each into query, key, value with shared learned matrices, score every pair with dot products, scale by root d-k, softmax into weights, and mix the values. Words stop being dictionary entries and start meaning what their context says.",
+      text: "Recap the journey: one embedding per word, dot products for similarity, a row of raw scores — then the upgrade: learned Wq, Wk, Wv give each word a query, key, and value, scores get scaled and softmaxed, and values are mixed into contextual embeddings.",
     },
-    note: "Pipeline: embed → Q/K/V → scores → scale → softmax → mix values.",
+    note: "embed → raw dots (idea) → Q/K/V (learnable) → scale → softmax → mix.",
   },
 ];

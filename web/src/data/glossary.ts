@@ -261,6 +261,62 @@ export const glossary: Record<string, GlossaryTerm> = {
     full: "Attention weight matrix (A)",
     definition: "The n×n matrix after softmax: row i says how much token i attends to every other token. Row 'bank' putting most of its weight on 'river' is the model disambiguating the word.",
   },
+  tokenizer: {
+    id: "tokenizer",
+    term: "tokenizer",
+    full: "Tokenizer",
+    definition:
+      "The program that splits raw text into tokens using a fixed vocabulary. Common words stay whole ('river'); rare words get split into pieces ('river' + 'bed'). GPT-style models use byte-pair encoding (BPE) tokenizers.",
+  },
+  vocabulary: {
+    id: "vocabulary",
+    term: "vocabulary",
+    full: "Vocabulary",
+    definition:
+      "The fixed list of all tokens a model knows — typically 30,000 to 100,000 entries. Every token has an ID (a row number), which is how text becomes numbers the model can look up.",
+  },
+  "embedding-table": {
+    id: "embedding-table",
+    term: "embedding table",
+    full: "Embedding table (lookup matrix)",
+    definition:
+      "A big matrix with one row per vocabulary token. Turning a token into a vector is literally reading its row — no computation. The rows start random and are learned during training (word2vec, GloVe, or the transformer itself).",
+  },
+  "vector-space": {
+    id: "vector-space",
+    term: "vector space",
+    full: "Vector space",
+    definition:
+      "Treat each vector as coordinates and every word becomes a point in space. Words used in similar contexts end up as nearby points — 'river' and 'water' cluster together, far from 'money'.",
+  },
+  cosine: {
+    id: "cosine",
+    term: "cosine similarity",
+    full: "Cosine similarity",
+    definition:
+      "The dot product after ignoring vector lengths: just the angle between two vectors. +1 means pointing the same way (very similar), 0 means unrelated, −1 means opposite. A length-independent closeness score.",
+  },
+  "positional-encoding": {
+    id: "positional-encoding",
+    term: "positional encoding",
+    full: "Positional encoding",
+    definition:
+      "A vector that represents a position (1st, 2nd, 3rd…) instead of a word, added onto each token's embedding. Without it, attention treats a sentence as a bag of words — 'dog bites man' and 'man bites dog' would look identical.",
+  },
+  "sin-cos-pair": {
+    id: "sin-cos-pair",
+    term: "sin/cos pair",
+    full: "Sine/cosine pair",
+    definition:
+      "Each pair of dimensions in the positional encoding holds a sine and cosine wave of one frequency. Early pairs oscillate fast (distinguish neighbours); later pairs oscillate slowly (encode coarse position). Together they give every position a unique fingerprint.",
+  },
+  frequency: {
+    id: "frequency",
+    term: "frequency",
+    full: "Wave frequency",
+    definition:
+      "How fast a wave repeats. The positional encoding uses many waves, from fast to extremely slow — like the second, minute, and hour hands of a clock: reading all hands together tells you the exact time (position).",
+  },
   "contextual-embedding": {
     id: "contextual-embedding",
     term: "contextual embedding",

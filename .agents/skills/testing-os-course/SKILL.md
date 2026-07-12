@@ -10,7 +10,7 @@ description: Test the interactive OS course React app (web/) end-to-end. Use whe
 - Lint/build gates: `npm run lint` (oxlint) and `npm run build` (tsc + vite) inside `web/`.
 
 ## Architecture map (for planning assertions)
-- Lessons live in `web/src/lessons/<name>/` as three files: `steps.ts` (data: code lines to highlight, scene state, EN/HI narration, note), `Scene.tsx` (SVG animation, framer-motion), `Lesson.tsx` (layout + Prev/Play/Next controls).
+- Lessons live in `web/src/lessons/<name>/` as three files: `steps.ts` (data: code lines to highlight, scene state, English narration string, note), `Scene.tsx` (SVG animation, framer-motion), `Lesson.tsx` (layout + Prev/Play/Next controls).
 - A lesson is only reachable when its entry in `web/src/data/chapters.ts` has `status: "available"` AND it is routed in `web/src/App.tsx`. If a new lesson doesn't show, check both.
 - Shared: `components/CodePane.tsx` (line highlighting + C tokenizer), `narration/useNarration.ts` (caption text; TTS provider is a stub).
 - Glossary ("jargon decoder"): definitions live centrally in `web/src/data/glossary.ts`; each lesson's `steps.ts` exports `glossaryIds` (list order in sidebar) and per-step `terms` (which rows get the violet active highlight); rendered by `components/GlossaryPane.tsx` inside each `Lesson.tsx` aside. Single-open accordion; the "ask AI" button only renders if an `onAskAi` prop is wired (currently unwired — assert its absence).
@@ -18,8 +18,8 @@ description: Test the interactive OS course React app (web/) end-to-end. Use whe
 ## Test procedure that works well
 1. Reload the page; click the lesson in the left sidebar (disabled lessons show a "soon" pill).
 2. Step through with the "Next →" button; at each step assert: (a) highlighted code line numbers match `steps.ts`, (b) scene elements for that state, (c) step indicator `N / total` in the caption bar, (d) accumulated short notes with the active one gradient-highlighted.
-3. Switch the topbar language select to हिन्दी and assert the caption re-renders in Hindi.
-3b. Glossary checks: assert the term list matches the lesson's `glossaryIds` order; click a term → definition expands and chevron rotates; click another → previous collapses (accordion); step with Next → active highlight rows follow the current step's `terms`; an expanded definition should survive step changes and language switches (definition text swaps to Hindi in place).
+3. Glossary checks: assert the term list matches the lesson's `glossaryIds` order; click a term → definition expands and chevron rotates; click another → previous collapses (accordion); step with Next → active highlight rows follow the current step's `terms`; an expanded definition should survive step changes.
+3b. All visible text is English-only (the Hindi text feature and topbar language select were removed; Hindi may return only as future voice-over audio via `narration/provider.ts`). If bilingual `{ en, hi }` objects reappear in `steps.ts`/`glossary.ts`/`summaries`, assert against the intended design first — a `[object Object]` render means a string/record type mismatch.
 4. Zoom screenshots of the code+scene region make the best evidence.
 
 ## Pitfalls / gotchas
