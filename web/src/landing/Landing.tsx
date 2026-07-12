@@ -9,28 +9,47 @@ interface LandingProps {
   onEnter: () => void;
 }
 
+function FeatureIcon({ d }: { d: string }) {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <path
+        d={d}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 const FEATURES = [
   {
     image: osKernel,
     kicker: "watch it happen",
+    icon: "M4 6h16M4 12h10M4 18h6",
     title: "Animated diagrams",
     text: "Systems drawn live, frame by frame — every animation step synced to the exact line of code that causes it.",
   },
   {
     image: tfAttention,
     kicker: "code that teaches",
+    icon: "M8 6l-5 6 5 6M16 6l5 6-5 6",
     title: "Synced code",
     text: "Real code on the left, what it builds on the right. The highlighted line is always the one you are watching.",
   },
   {
     image: tfWords,
     kicker: "no leaps of faith",
+    icon: "M4 20l5-5 4 4 7-9",
     title: "First-principles steps",
     text: "No jumping ahead. Every concept is rebuilt from its smallest idea, one small step at a time.",
   },
   {
     image: osInterrupts,
     kicker: "quick notes & jargon decoder",
+    icon: "M12 3a7 7 0 00-4 12.7V18h8v-2.3A7 7 0 0012 3zM10 21h4",
     title: "Every term explained",
     text: "Short notes track each step, and every abbreviation is one click away from a plain-English definition.",
   },
@@ -40,22 +59,27 @@ const SKILLS = [
   {
     title: "First Principles",
     text: "Every topic starts at its smallest idea and is rebuilt step by step — no leaps of faith.",
+    icon: "M12 3v18M5 10l7-7 7 7",
   },
   {
     title: "Intuition",
     text: "You don't memorize diagrams. You watch them happen, so you can re-derive them.",
+    icon: "M12 5a7 7 0 017 7c0 3-2 4.5-2 7h-10c0-2.5-2-4-2-7a7 7 0 017-7z",
   },
   {
     title: "Animations",
     text: "Concepts drawn live, frame by frame, synced to the exact line of code that causes them.",
+    icon: "M6 4l14 8-14 8V4z",
   },
   {
     title: "Theory",
     text: "Blog-style chapter recaps and a jargon decoder give you the depth behind every visual.",
+    icon: "M4 5h9a3 3 0 013 3v11a3 3 0 00-3-3H4V5zM20 5h-4v11h4V5z",
   },
   {
     title: "Interview Questions",
     text: "Quickfire Q&A at the end of every section turns understanding into interview-ready answers.",
+    icon: "M4 5h16v10H9l-5 4V5zM9 9h6",
   },
 ];
 
@@ -121,11 +145,16 @@ export function Landing({ onEnter }: LandingProps) {
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, delay: (i % 2) * 0.12 }}
             >
+              <div className="feature-head">
+                <span className="feature-icon">
+                  <FeatureIcon d={f.icon} />
+                </span>
+                <span className="feature-kicker">{f.kicker}</span>
+              </div>
               <div className="feature-shot">
                 <img src={f.image} alt={f.title} loading="lazy" />
               </div>
               <div className="feature-body">
-                <p className="landing-section-kicker">{f.kicker}</p>
                 <h3>{f.title}</h3>
                 <p>{f.text}</p>
               </div>
@@ -137,19 +166,20 @@ export function Landing({ onEnter }: LandingProps) {
       <section className="landing-section">
         <p className="landing-section-kicker">what you walk away with</p>
         <h2>The skill stack</h2>
-        <div className="skill-stage">
+        <div className="skill-grid">
           {SKILLS.map((s, i) => (
             <motion.div
               key={s.title}
-              className="skill-card"
-              style={{ zIndex: i + 1, marginTop: i * 14 }}
-              initial={{ opacity: 0, y: 40 }}
+              className="skill-item"
+              initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, delay: i * 0.12 }}
-              whileHover={{ y: -14, transition: { duration: 0.25 } }}
+              transition={{ duration: 0.55, delay: (i % 2) * 0.12 }}
             >
-              <span className="skill-index">0{i + 1}</span>
+              <span className="skill-ghost">0{i + 1}</span>
+              <span className="skill-badge">
+                <FeatureIcon d={s.icon} />
+              </span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
             </motion.div>
@@ -171,27 +201,9 @@ export function Landing({ onEnter }: LandingProps) {
             devin.ai
           </a>
         </span>
-        <a
-          className="cognition-mark"
-          href="https://cognition.ai"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Cognition"
-        >
-          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-            <g
-              stroke="currentColor"
-              strokeWidth="2.4"
-              strokeLinecap="round"
-              fill="none"
-            >
-              <line x1="12" y1="2.5" x2="12" y2="21.5" />
-              <line x1="3.8" y1="7.3" x2="20.2" y2="16.7" />
-              <line x1="20.2" y1="7.3" x2="3.8" y2="16.7" />
-            </g>
-          </svg>
-          <span>Cognition</span>
-        </a>
+        <span className="footer-brand">
+          thinkit<em>.club</em>
+        </span>
       </footer>
     </div>
   );

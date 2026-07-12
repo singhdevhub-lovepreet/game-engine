@@ -116,7 +116,7 @@
   margin-bottom: 44px;
 }
 
-/* --- Feature cards --- */
+/* --- Feature cards (rounded widget style) --- */
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -124,32 +124,62 @@
 }
 
 .feature-card {
-  background: var(--bg-card);
-  border: 1px solid var(--bg-card-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition: border-color 0.3s;
+  background: #131316;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 28px;
+  padding: 24px;
+  transition:
+    border-color 0.3s,
+    transform 0.3s var(--expand-ease);
 }
 
 .feature-card:hover {
-  border-color: rgba(139, 92, 246, 0.35);
+  border-color: rgba(255, 255, 255, 0.14);
+  transform: translateY(-4px);
+}
+
+.feature-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+.feature-kicker {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
 }
 
 .feature-shot {
-  border-bottom: 1px solid var(--bg-card-border);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   background: #060606;
 }
 
 .feature-shot img {
   display: block;
   width: 100%;
-  height: 280px;
+  height: 260px;
   object-fit: cover;
   object-position: top center;
 }
 
 .feature-body {
-  padding: 24px 26px 28px;
+  padding: 22px 4px 4px;
 }
 
 .feature-body h3 {
@@ -165,91 +195,71 @@
   line-height: 1.65;
 }
 
-/* --- 3D skill stack --- */
-.skill-stage {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  perspective: 1400px;
-  padding: 40px 0 60px;
+/* --- Skill grid (numbered, ghost numerals) --- */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 26px;
+  padding: 20px 0 40px;
 }
 
-.skill-card {
+.skill-item {
   position: relative;
-  width: 270px;
-  min-height: 300px;
-  margin-left: -34px;
-  padding: 26px 24px;
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  transform: rotateX(8deg) rotateY(-14deg) rotateZ(2deg);
-  transform-style: preserve-3d;
+  padding: 30px 30px 32px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   background:
-    linear-gradient(
-      -45deg,
-      rgba(250, 250, 252, 0.16),
-      rgba(190, 190, 200, 0.07) 42%,
-      rgba(20, 20, 24, 0) 72%
+    radial-gradient(
+      ellipse 80% 60% at 80% 0%,
+      rgba(139, 92, 246, 0.08),
+      transparent 70%
     ),
     #101014;
-  box-shadow:
-    -18px 24px 48px rgba(0, 0, 0, 0.65),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
   overflow: hidden;
+  transition: border-color 0.3s;
 }
 
-.skill-card:first-child {
-  margin-left: 0;
+.skill-item:hover {
+  border-color: rgba(139, 92, 246, 0.3);
 }
 
-/* grainy metal finish */
-.skill-card::before {
-  content: "";
+.skill-ghost {
   position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-  opacity: 0.14;
-  mix-blend-mode: overlay;
+  top: -18px;
+  right: 14px;
+  font-family: var(--font-display);
+  font-size: 110px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.05);
   pointer-events: none;
+  user-select: none;
 }
 
-/* silver sheen sweeping bottom → -45° */
-.skill-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, 0.22),
-    rgba(255, 255, 255, 0) 34%
-  );
-  opacity: 0;
-  transition: opacity 0.35s;
-  pointer-events: none;
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.55), rgba(139, 92, 246, 0.2));
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: #eae4ff;
+  margin-bottom: 18px;
 }
 
-.skill-card:hover::after {
-  opacity: 1;
-}
-
-.skill-index {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.15em;
-}
-
-.skill-card h3 {
+.skill-item h3 {
   font-family: var(--font-display);
   font-size: 24px;
   font-weight: 400;
-  margin: 14px 0 12px;
+  margin-bottom: 10px;
 }
 
-.skill-card p {
+.skill-item p {
   color: var(--text-secondary);
   font-size: 13.5px;
   line-height: 1.6;
+  max-width: 340px;
 }
 
 /* --- Final CTA --- */
@@ -291,33 +301,18 @@
   color: #ef4444;
 }
 
-.cognition-mark {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-ui);
-  font-weight: 500;
-  letter-spacing: 0.02em;
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.footer-brand em {
+  color: var(--accent);
+  font-style: italic;
 }
 
 @media (max-width: 900px) {
-  .skill-stage {
-    flex-direction: column;
-    align-items: center;
-    perspective: none;
-  }
-
-  .skill-card {
-    margin-left: 0;
-    margin-top: -40px;
-    transform: rotateX(4deg);
-    width: min(340px, 90vw);
-  }
-
-  .skill-card:first-child {
-    margin-top: 0;
-  }
-
   .landing-nav,
   .landing-footer {
     padding-left: 20px;
