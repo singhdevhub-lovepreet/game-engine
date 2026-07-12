@@ -27,11 +27,30 @@ export interface InterruptsStep extends LessonStep {
   scene: SceneState;
 }
 
+/** Terms surfaced in this lesson's jargon decoder, in teaching order. */
+export const glossaryIds = [
+  "polling",
+  "stdin",
+  "wait-queue",
+  "irq",
+  "scancode",
+  "apic",
+  "vector",
+  "registers",
+  "idt",
+  "handler",
+  "eoi",
+  "top-bottom-half",
+  "run-queue",
+  "iret",
+];
+
 export const steps: InterruptsStep[] = [
   {
     id: "intro",
     codeLines: [],
     scene: "idle",
+    terms: ["polling", "irq"],
     narration: {
       id: "intro",
       text: {
@@ -45,6 +64,7 @@ export const steps: InterruptsStep[] = [
     id: "blocked",
     codeLines: [7],
     scene: "blocked",
+    terms: ["stdin", "wait-queue"],
     narration: {
       id: "blocked",
       text: {
@@ -58,6 +78,7 @@ export const steps: InterruptsStep[] = [
     id: "irq",
     codeLines: [7],
     scene: "irq",
+    terms: ["irq", "scancode", "apic", "vector"],
     narration: {
       id: "irq",
       text: {
@@ -71,6 +92,7 @@ export const steps: InterruptsStep[] = [
     id: "save",
     codeLines: [7],
     scene: "save",
+    terms: ["registers"],
     narration: {
       id: "save",
       text: {
@@ -84,6 +106,7 @@ export const steps: InterruptsStep[] = [
     id: "vector",
     codeLines: [7],
     scene: "vector",
+    terms: ["vector", "idt", "handler"],
     narration: {
       id: "vector",
       text: {
@@ -97,6 +120,7 @@ export const steps: InterruptsStep[] = [
     id: "handler",
     codeLines: [7],
     scene: "handler",
+    terms: ["handler", "scancode", "eoi", "top-bottom-half"],
     narration: {
       id: "handler",
       text: {
@@ -110,6 +134,7 @@ export const steps: InterruptsStep[] = [
     id: "wake",
     codeLines: [7],
     scene: "wake",
+    terms: ["wait-queue", "run-queue"],
     narration: {
       id: "wake",
       text: {
@@ -123,6 +148,7 @@ export const steps: InterruptsStep[] = [
     id: "resume",
     codeLines: [9],
     scene: "resume",
+    terms: ["iret", "registers"],
     narration: {
       id: "resume",
       text: {
@@ -136,6 +162,7 @@ export const steps: InterruptsStep[] = [
     id: "summary",
     codeLines: [9, 10],
     scene: "done",
+    terms: ["irq", "apic", "idt", "eoi", "iret"],
     narration: {
       id: "summary",
       text: {

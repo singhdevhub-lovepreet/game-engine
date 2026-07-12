@@ -13,6 +13,8 @@ export interface LessonStep {
   codeLines: number[];
   narration: NarrationSegment;
   note?: string;
+  /** Glossary term ids (see data/glossary.ts) most relevant to this step. */
+  terms?: string[];
 }
 
 export interface Lesson {
