@@ -29,7 +29,7 @@ export const chapters: Chapter[] = [
         id: "monolithic-vs-microkernel",
         title: "Monolithic vs. Microkernel",
         description: "Linux vs. QNX architecture at a glance.",
-        status: "coming-soon",
+        status: "available",
       },
     ],
   },

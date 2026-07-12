@@ -3,6 +3,7 @@ import "./App.css";
 import { Sidebar } from "./components/Sidebar";
 import { InterruptsLesson } from "./lessons/interrupts/Lesson";
 import { KernelVsUserSpaceLesson } from "./lessons/kernelVsUserSpace/Lesson";
+import { MonolithicVsMicrokernelLesson } from "./lessons/monolithicVsMicrokernel/Lesson";
 import { SystemCallsLesson } from "./lessons/systemCalls/Lesson";
 import type { Language, Lesson } from "./types";
 
@@ -32,6 +33,9 @@ export default function App() {
         )}
         {lessonId === "system-calls" && <SystemCallsLesson language={language} />}
         {lessonId === "interrupts" && <InterruptsLesson language={language} />}
+        {lessonId === "monolithic-vs-microkernel" && (
+          <MonolithicVsMicrokernelLesson language={language} />
+        )}
       </main>
     </div>
   );

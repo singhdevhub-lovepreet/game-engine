@@ -370,6 +370,49 @@ main {
   color: #d6d6d6;
 }
 
+/* --- Scorecard (diagram-first lessons) --- */
+.scorecard {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.scorecard-head,
+.scorecard-row {
+  display: grid;
+  grid-template-columns: 82px 1fr 1fr;
+  gap: 8px;
+  padding: 9px 18px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  border-bottom: 1px solid var(--bg-subtle-border);
+}
+
+.scorecard-head {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 9.5px;
+  color: var(--text-muted);
+}
+
+.scorecard-row {
+  color: var(--text-secondary);
+}
+
+.scorecard-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+
+.scorecard-hint {
+  padding: 14px 18px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 /* --- Scene --- */
 .scene {
   background: var(--bg-surface);

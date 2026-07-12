@@ -218,6 +218,78 @@ export const glossary: Record<string, GlossaryTerm> = {
       hi: "वह CPU instruction जो handler खत्म करती है: saved rip, rflags और rsp restore करती है, वापस user mode में जाती है, और interrupted program ऐसे चलता है जैसे कुछ हुआ ही नहीं।",
     },
   },
+  monolithic: {
+    id: "monolithic",
+    term: "monolithic",
+    full: "Monolithic kernel",
+    definition: {
+      en: "A design where the whole OS — file systems, drivers, network stack, scheduler — lives together in kernel space as one big program. Services call each other directly, like rooms in one house. Linux is the classic example.",
+      hi: "एक design जहाँ पूरा OS — file systems, drivers, network stack, scheduler — एक बड़े program की तरह kernel space में साथ रहता है। Services एक-दूसरे को सीधे call करती हैं, एक घर के कमरों जैसे। Linux इसका classic उदाहरण है।",
+    },
+  },
+  microkernel: {
+    id: "microkernel",
+    term: "microkernel",
+    full: "Microkernel",
+    definition: {
+      en: "A design where the kernel keeps only the bare minimum — IPC, scheduling, basic memory. Everything else (file system, drivers) runs as separate user-space server processes that talk via messages. QNX and MINIX work this way.",
+      hi: "एक design जहाँ kernel सिर्फ न्यूनतम रखता है — IPC, scheduling, basic memory। बाकी सब (file system, drivers) अलग user-space server processes की तरह चलता है जो messages से बात करते हैं। QNX और MINIX ऐसे ही काम करते हैं।",
+    },
+  },
+  ipc: {
+    id: "ipc",
+    term: "IPC",
+    full: "Inter-Process Communication",
+    definition: {
+      en: "How separate processes talk to each other — by sending messages through the kernel instead of calling functions directly. It is the postal service of a microkernel: safe, but each letter costs a trip through the kernel.",
+      hi: "अलग-अलग processes आपस में कैसे बात करती हैं — सीधे function call के बजाय kernel के ज़रिए messages भेजकर। यह microkernel की डाक सेवा है: सुरक्षित, पर हर चिट्ठी kernel से होकर जाती है।",
+    },
+  },
+  driver: {
+    id: "driver",
+    term: "driver",
+    full: "Device driver",
+    definition: {
+      en: "The piece of code that knows how to talk to one specific device — a disk, a keyboard, a network card. Drivers are the most common source of OS bugs, which is why where they live (kernel or user space) matters so much.",
+      hi: "वह code जो किसी एक device — disk, keyboard, network card — से बात करना जानता है। Drivers OS bugs का सबसे आम स्रोत हैं, इसीलिए वे कहाँ रहते हैं (kernel या user space) इतना मायने रखता है।",
+    },
+  },
+  "kernel-panic": {
+    id: "kernel-panic",
+    term: "panic",
+    full: "Kernel panic",
+    definition: {
+      en: "What happens when code inside the kernel crashes: there is no one above it to catch the error, so the whole machine halts. In a monolithic kernel, one buggy driver can take everything down.",
+      hi: "जब kernel के अंदर का code crash होता है: ऊपर कोई नहीं जो error पकड़े, इसलिए पूरी machine रुक जाती है। Monolithic kernel में एक buggy driver सब कुछ गिरा सकता है।",
+    },
+  },
+  server: {
+    id: "server",
+    term: "server",
+    full: "User-space server process",
+    definition: {
+      en: "In a microkernel, an OS service (file system, driver, network) packaged as an ordinary user-mode process. If it crashes, the kernel survives and can simply restart it — like restarting an app.",
+      hi: "Microkernel में OS की एक service (file system, driver, network) जो एक आम user-mode process की तरह चलती है। Crash हो जाए तो kernel बचा रहता है और उसे बस restart कर देता है — किसी app की तरह।",
+    },
+  },
+  module: {
+    id: "module",
+    term: "module",
+    full: "Loadable kernel module (LKM)",
+    definition: {
+      en: "Linux's compromise: chunks of kernel code (often drivers) that can be loaded and unloaded at runtime without rebooting. They still run in kernel mode though — a buggy module can still panic the machine.",
+      hi: "Linux का समझौता: kernel code के टुकड़े (अक्सर drivers) जो बिना reboot के runtime पर load/unload हो सकते हैं। पर चलते वे kernel mode में ही हैं — buggy module अब भी machine panic कर सकता है।",
+    },
+  },
+  hybrid: {
+    id: "hybrid",
+    term: "hybrid",
+    full: "Hybrid kernel",
+    definition: {
+      en: "A middle path used by Windows (NT) and macOS (XNU): a microkernel-style structure, but with most services pulled back into kernel space for speed. Message passing where it helps, direct calls where it counts.",
+      hi: "Windows (NT) और macOS (XNU) का बीच का रास्ता: ढाँचा microkernel जैसा, पर speed के लिए ज़्यादातर services वापस kernel space में। जहाँ फ़ायदा हो वहाँ message passing, जहाँ ज़रूरी हो वहाँ direct calls।",
+    },
+  },
   stdin: {
     id: "stdin",
     term: "stdin / stdout",
