@@ -675,8 +675,16 @@ main {
   overflow-y: auto;
 }
 
-.summary-article {
+.summary-page .lesson-header {
+  width: 100%;
   max-width: 720px;
+  margin: 0 auto;
+}
+
+.summary-article {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
