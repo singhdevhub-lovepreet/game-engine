@@ -112,9 +112,9 @@ export function Scene({ step }: SceneProps) {
                     }
                   />
                   <text
-                    x={px(w.x) + (w.label === "money" ? -10 : 10)}
-                    y={py(w.y) - 8}
-                    textAnchor={w.label === "money" ? "end" : "start"}
+                    x={w.label === "money" ? px(w.x) : px(w.x) + 10}
+                    y={py(w.y) - 10}
+                    textAnchor={w.label === "money" ? "middle" : "start"}
                     className="box-label"
                   >
                     {w.label} ({w.x}, {w.y})

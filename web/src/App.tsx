@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { Sidebar } from "./components/Sidebar";
+import { Landing } from "./landing/Landing";
 import { tracks } from "./data/tracks";
 import { InterruptsLesson } from "./lessons/interrupts/Lesson";
 import { KernelVsUserSpaceLesson } from "./lessons/kernelVsUserSpace/Lesson";
@@ -15,6 +16,7 @@ import { osBasicsSummary } from "./summaries/osBasics";
 import type { Lesson, Track } from "./types";
 
 export default function App() {
+  const [entered, setEntered] = useState(false);
   const [trackId, setTrackId] = useState(tracks[0].id);
   const [lessonId, setLessonId] = useState(tracks[0].defaultLessonId);
   const track = tracks.find((t) => t.id === trackId) ?? tracks[0];
@@ -24,6 +26,10 @@ export default function App() {
     setTrackId(t.id);
     setLessonId(t.defaultLessonId);
   };
+
+  if (!entered) {
+    return <Landing onEnter={() => setEntered(true)} />;
+  }
 
   return (
     <div className="app">
