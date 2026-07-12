@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { PositionalEncodingsStep } from "./steps";
 
@@ -22,18 +23,54 @@ function wavePath(freq: number, phase: number, baseY: number, amp: number): stri
 
 const posX = (pos: number) => GX0 + (pos / MAX_POS) * (GX1 - GX0);
 
-/** PE heat value for the fingerprint stripe. */
-function pe(dim: number, pos: number): number {
-  const freq = 1 / 10000 ** (Math.floor(dim / 2) / 4);
+/** PE value: standard sin/cos encoding, frequency set by the dimension pair. */
+function pe(dim: number, pos: number, nDims: number): number {
+  const freq = 1 / 10000 ** (Math.floor(dim / 2) / Math.max(1, nDims / 2));
   return dim % 2 === 0 ? Math.sin(pos * freq) : Math.cos(pos * freq);
 }
 
+const HEAT_X = 106;
+const HEAT_W = 270;
+const HEAT_Y = 86;
+const HEAT_H = 192;
+
 export function Scene({ step }: SceneProps) {
   const { scene } = step;
+  const [nPos, setNPos] = useState(10);
+  const [nDims, setNDims] = useState(8);
+  const [hover, setHover] = useState<{ dim: number; pos: number } | null>(null);
+  const showHeatmap = scene === "fingerprint" || scene === "done";
+  const cellW = HEAT_W / nPos;
+  const cellH = HEAT_H / nDims;
 
   return (
     <div className="scene">
       <div className="pane-title">positional encodings</div>
+      {showHeatmap && (
+        <div className="scene-controls">
+          <label>
+            positions <span className="scene-controls-value">{nPos}</span>
+            <input
+              type="range"
+              min={6}
+              max={16}
+              value={nPos}
+              onChange={(e) => setNPos(Number(e.target.value))}
+            />
+          </label>
+          <label>
+            dimensions <span className="scene-controls-value">{nDims}</span>
+            <input
+              type="range"
+              min={4}
+              max={12}
+              step={2}
+              value={nDims}
+              onChange={(e) => setNDims(Number(e.target.value))}
+            />
+          </label>
+        </div>
+      )}
       <svg viewBox="0 0 480 360" className="scene-svg">
         {/* Bag of words problem */}
         <AnimatePresence>
@@ -180,49 +217,108 @@ export function Scene({ step }: SceneProps) {
           )}
         </AnimatePresence>
 
-        {/* Fingerprint heatmap */}
+        {/* Fingerprint heatmap — interactive: sliders regenerate it, hover inspects */}
         <AnimatePresence>
-          {(scene === "fingerprint" || scene === "done") && (
-            <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          {showHeatmap && (
+            <motion.g
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onMouseLeave={() => setHover(null)}
+            >
               <text x={240} y={66} textAnchor="middle" className="box-label">
                 p — one column per position
               </text>
-              {Array.from({ length: 8 }, (_, dim) => (
+              {Array.from({ length: nDims }, (_, dim) => (
                 <g key={dim}>
-                  <text x={98} y={98 + dim * 24} textAnchor="end" className="tiny-label">
+                  <text
+                    x={HEAT_X - 8}
+                    y={HEAT_Y + dim * cellH + cellH / 2 + 4}
+                    textAnchor="end"
+                    className="tiny-label"
+                    fill={hover?.dim === dim ? "#8b5cf6" : undefined}
+                  >
                     {dim % 2 === 0 ? "sin" : "cos"} d{dim}
                   </text>
-                  {Array.from({ length: 10 }, (_, pos) => {
-                    const v = pe(dim, pos);
+                  {Array.from({ length: nPos }, (_, pos) => {
+                    const v = pe(dim, pos, nDims);
                     return (
                       <rect
                         key={pos}
-                        x={106 + pos * 27}
-                        y={86 + dim * 24}
-                        width={25}
-                        height={22}
+                        x={HEAT_X + pos * cellW}
+                        y={HEAT_Y + dim * cellH}
+                        width={cellW - 2}
+                        height={cellH - 2}
                         rx={3}
                         fill={
                           v >= 0
                             ? `rgba(139, 92, 246, ${(0.12 + v * 0.55).toFixed(2)})`
                             : `rgba(245, 158, 11, ${(0.08 + -v * 0.4).toFixed(2)})`
                         }
-                        stroke="#1f1f1f"
+                        stroke={hover?.dim === dim && hover?.pos === pos ? "rgba(255,255,255,0.7)" : "#1f1f1f"}
+                        onMouseEnter={() => setHover({ dim, pos })}
+                        style={{ cursor: "crosshair" }}
                       />
                     );
                   })}
                 </g>
               ))}
-              {Array.from({ length: 10 }, (_, pos) => (
-                <text key={pos} x={118.5 + pos * 27} y={292} textAnchor="middle" className="tiny-label">
+              {hover && (
+                <rect
+                  x={HEAT_X + hover.pos * cellW - 1}
+                  y={HEAT_Y - 2}
+                  width={cellW}
+                  height={HEAT_H + 2}
+                  rx={3}
+                  fill="none"
+                  stroke="rgba(245, 158, 11, 0.55)"
+                  pointerEvents="none"
+                />
+              )}
+              {Array.from({ length: nPos }, (_, pos) => (
+                <text
+                  key={pos}
+                  x={HEAT_X + pos * cellW + cellW / 2 - 1}
+                  y={HEAT_Y + HEAT_H + 14}
+                  textAnchor="middle"
+                  className="tiny-label"
+                  fill={hover?.pos === pos ? "#f59e0b" : undefined}
+                >
                   {pos}
                 </text>
               ))}
-              <text x={240} y={320} textAnchor="middle" className="tiny-label">
-                {scene === "done"
-                  ? "waves → unique fingerprints → x + p. next: attention"
-                  : "no two columns match — every position is unique"}
-              </text>
+              {hover ? (
+                <g>
+                  <line x1={GX0} y1={330} x2={GX1} y2={330} className="dma-line" opacity={0.3} />
+                  <path
+                    d={Array.from({ length: 121 }, (_, s) => {
+                      const p = (s / 120) * (nPos - 1);
+                      const x = GX0 + (s / 120) * (GX1 - GX0);
+                      const y = 330 - 18 * pe(hover.dim, p, nDims);
+                      return `${s === 0 ? "M" : "L"} ${x.toFixed(1)} ${y.toFixed(1)}`;
+                    }).join(" ")}
+                    fill="none"
+                    stroke="rgba(139, 92, 246, 0.8)"
+                    strokeWidth={1.5}
+                  />
+                  <circle
+                    cx={GX0 + (hover.pos / (nPos - 1)) * (GX1 - GX0)}
+                    cy={330 - 18 * pe(hover.dim, hover.pos, nDims)}
+                    r={4}
+                    fill="rgba(245, 158, 11, 0.9)"
+                  />
+                  <text x={240} y={306} textAnchor="middle" className="tiny-label">
+                    PE(pos {hover.pos}, d{hover.dim}) ={" "}
+                    {pe(hover.dim, hover.pos, nDims).toFixed(2)} — this cell reads its wave here
+                  </text>
+                </g>
+              ) : (
+                <text x={240} y={320} textAnchor="middle" className="tiny-label">
+                  {scene === "done"
+                    ? "waves → unique fingerprints → x + p. next: attention"
+                    : "no two columns match — hover a cell, drag the sliders"}
+                </text>
+              )}
             </motion.g>
           )}
         </AnimatePresence>
