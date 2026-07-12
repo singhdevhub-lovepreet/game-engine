@@ -201,18 +201,6 @@ main {
   text-transform: uppercase;
 }
 
-.topbar select {
-  background: var(--bg-card);
-  color: var(--text-primary);
-  border: 1px solid var(--bg-card-border);
-  border-radius: var(--radius-full);
-  padding: 6px 14px;
-  font-family: var(--font-ui);
-  font-size: 12px;
-  text-transform: none;
-  letter-spacing: normal;
-}
-
 .lesson {
   padding: 28px 32px;
   display: flex;

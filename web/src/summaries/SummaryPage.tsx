@@ -1,4 +1,3 @@
-import type { Language } from "../types";
 import type { ChapterSummary, SummaryFigure } from "./types";
 
 const VIOLET = "rgba(139, 92, 246, 0.55)";
@@ -100,7 +99,7 @@ function MonoVsMicroFigure() {
   );
 }
 
-function Figure({ figure, language }: { figure: SummaryFigure; language: Language }) {
+function Figure({ figure }: { figure: SummaryFigure }) {
   return (
     <figure className="summary-figure">
       {figure.kind === "rings" && <RingsFigure />}
@@ -117,50 +116,49 @@ function Figure({ figure, language }: { figure: SummaryFigure; language: Languag
         />
       )}
       {figure.kind === "mono-vs-micro" && <MonoVsMicroFigure />}
-      <figcaption>{figure.caption[language]}</figcaption>
+      <figcaption>{figure.caption}</figcaption>
     </figure>
   );
 }
 
 interface SummaryPageProps {
   summary: ChapterSummary;
-  language: Language;
 }
 
-export function SummaryPage({ summary, language }: SummaryPageProps) {
+export function SummaryPage({ summary }: SummaryPageProps) {
   return (
     <div className="lesson summary-page">
       <header className="lesson-header">
         <div>
-          <h2>{summary.title[language]}</h2>
+          <h2>{summary.title}</h2>
           <p>Blog-style recap · read before the next chapter</p>
         </div>
       </header>
       <article className="summary-article">
-        <p className="summary-intro">{summary.intro[language]}</p>
+        <p className="summary-intro">{summary.intro}</p>
         {summary.sections.map((section) => (
           <section key={section.id}>
-            <h3>{section.heading[language]}</h3>
+            <h3>{section.heading}</h3>
             {section.body.map((p, i) => (
-              <p key={i}>{p[language]}</p>
+              <p key={i}>{p}</p>
             ))}
-            {section.figure && <Figure figure={section.figure} language={language} />}
+            {section.figure && <Figure figure={section.figure} />}
             {section.bullets && (
               <ul className="summary-takeaways">
                 {section.bullets.map((b, i) => (
-                  <li key={i}>{b[language]}</li>
+                  <li key={i}>{b}</li>
                 ))}
               </ul>
             )}
           </section>
         ))}
         <section>
-          <h3>{language === "en" ? "Interview quickfire" : "Interview quickfire"}</h3>
+          <h3>Interview quickfire</h3>
           <dl className="summary-quickfire">
             {summary.quickfire.map((item, i) => (
               <div key={i}>
-                <dt>{item.q[language]}</dt>
-                <dd>{item.a[language]}</dd>
+                <dt>{item.q}</dt>
+                <dd>{item.a}</dd>
               </div>
             ))}
           </dl>

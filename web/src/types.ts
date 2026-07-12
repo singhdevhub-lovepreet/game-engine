@@ -1,8 +1,9 @@
+/** Languages a future TTS voice-over provider may support. */
 export type Language = "en" | "hi";
 
 export interface NarrationSegment {
   id: string;
-  text: Record<Language, string>;
+  text: string;
   /** Populated later by a TTS provider (e.g. ElevenLabs) per language. */
   audioUrl?: Partial<Record<Language, string>>;
 }
