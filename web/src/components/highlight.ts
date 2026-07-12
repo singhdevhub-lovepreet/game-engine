@@ -25,6 +25,44 @@ const TYPES = new Set([
   "signed", "size_t", "ssize_t", "pid_t", "off_t", "bool",
 ]);
 
+const PY_KEYWORDS = new Set([
+  "def", "return", "if", "elif", "else", "for", "while", "in", "not", "and",
+  "or", "is", "None", "True", "False", "import", "from", "as", "class",
+  "with", "lambda", "pass", "break", "continue", "yield", "raise", "try",
+  "except", "finally", "assert", "del", "global", "nonlocal",
+]);
+
+const PY_TYPES = new Set([
+  "int", "float", "str", "bool", "list", "dict", "tuple", "set", "torch",
+  "Tensor", "F", "nn",
+]);
+
+const PY_PATTERN =
+  /(#.*)|("""[\s\S]*?"""|"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b)|([A-Za-z_]\w*)|(\s+)|(.)/g;
+
+export function tokenizePython(line: string): Token[] {
+  const tokens: Token[] = [];
+  for (const m of line.matchAll(PY_PATTERN)) {
+    const [, comment, str, num, word, ws, other] = m;
+    if (comment !== undefined) tokens.push({ type: "comment", value: comment });
+    else if (str !== undefined) tokens.push({ type: "string", value: str });
+    else if (num !== undefined) tokens.push({ type: "number", value: num });
+    else if (word !== undefined) {
+      const rest = line.slice(m.index! + word.length);
+      const type: TokenType = PY_KEYWORDS.has(word)
+        ? "keyword"
+        : PY_TYPES.has(word)
+          ? "type"
+          : /^\s*\(/.test(rest)
+            ? "function"
+            : "plain";
+      tokens.push({ type, value: word });
+    } else if (ws !== undefined) tokens.push({ type: "plain", value: ws });
+    else tokens.push({ type: "punctuation", value: other! });
+  }
+  return tokens;
+}
+
 const PATTERN =
   /(\/\/.*|\/\*[\s\S]*?\*\/)|(#\s*\w+(?:\s*<[^>]*>)?)|("(?:[^"\\]|\\.)*")|('(?:[^'\\]|\\.)*')|(\b\d+(?:\.\d+)?[uUlLfF]*\b)|([A-Za-z_]\w*)|(\s+)|(.)/g;
 
