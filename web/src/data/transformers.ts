@@ -50,7 +50,7 @@ export const transformerChapters: Chapter[] = [
         id: "multi-head-attention",
         title: "Multi-Head Attention",
         description: "Many attention heads, each looking for something different.",
-        status: "coming-soon",
+        status: "available",
       },
       {
         id: "attention-is-all-you-need",
