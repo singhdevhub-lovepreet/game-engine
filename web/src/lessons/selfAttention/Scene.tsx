@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { SelfAttentionStep } from "./steps";
 
@@ -27,6 +28,7 @@ const RAW_SCORES = ["2.1", "9.4", "0.8", "2.1", "8.1"];
 
 export function Scene({ step }: SceneProps) {
   const { scene } = step;
+  const [hoverCell, setHoverCell] = useState<{ r: number; c: number } | null>(null);
   const showEmbeddings = scene !== "tokens";
   const embedFocus = scene === "embed-one";
   const dotTwo = scene === "dot-two";
@@ -348,12 +350,19 @@ export function Scene({ step }: SceneProps) {
                     width={CELL - 2}
                     height={CELL - 2}
                     rx={3}
-                    stroke="#1f1f1f"
+                    stroke={
+                      heat && hoverCell?.r === r && hoverCell?.c === c
+                        ? "rgba(255,255,255,0.7)"
+                        : "#1f1f1f"
+                    }
                     animate={{
                       fill: heat
                         ? `rgba(139, 92, 246, ${(w * 0.85).toFixed(2)})`
                         : "rgba(139, 92, 246, 0.08)",
                     }}
+                    onMouseEnter={heat ? () => setHoverCell({ r, c }) : undefined}
+                    onMouseLeave={heat ? () => setHoverCell(null) : undefined}
+                    style={heat ? { cursor: "crosshair" } : undefined}
                   />
                 )),
               )}
@@ -377,7 +386,9 @@ export function Scene({ step }: SceneProps) {
                   textAnchor="middle"
                   className="tiny-label"
                 >
-                  row "bank": 62% river
+                  {hoverCell
+                    ? `A[${TOKENS[hoverCell.r]} → ${TOKENS[hoverCell.c]}] = ${WEIGHTS[hoverCell.r][hoverCell.c].toFixed(2)}`
+                    : 'row "bank": 62% river · hover a cell'}
                 </text>
               )}
             </motion.g>
