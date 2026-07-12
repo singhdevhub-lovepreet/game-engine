@@ -12,27 +12,27 @@ interface LandingProps {
 const FEATURES = [
   {
     image: osKernel,
-    kicker: "animated system diagrams",
-    title: "Kernel vs. User Space",
-    text: "Privilege rings, syscall boundaries and interrupts drawn live — every frame synced to the line of C that causes it.",
+    kicker: "watch it happen",
+    title: "Animated diagrams",
+    text: "Systems drawn live, frame by frame — every animation step synced to the exact line of code that causes it.",
   },
   {
     image: tfAttention,
-    kicker: "synced code highlighting",
-    title: "Self-Attention, step by step",
-    text: "PyTorch on the left, the matrices it builds on the right. Watch softmax turn raw scores into attention weights.",
+    kicker: "code that teaches",
+    title: "Synced code",
+    text: "Real code on the left, what it builds on the right. The highlighted line is always the one you are watching.",
   },
   {
     image: tfWords,
-    kicker: "true first principles",
-    title: "Words → Vectors",
-    text: "No jumping ahead. Tokens, IDs and embedding lookups come before a single attention formula appears.",
+    kicker: "no leaps of faith",
+    title: "First-principles steps",
+    text: "No jumping ahead. Every concept is rebuilt from its smallest idea, one small step at a time.",
   },
   {
     image: osInterrupts,
-    kicker: "jargon decoder",
+    kicker: "quick notes & jargon decoder",
     title: "Every term explained",
-    text: "IRQ, APIC, IDT, softmax — every abbreviation is one click away from a plain-English definition in the sidebar.",
+    text: "Short notes track each step, and every abbreviation is one click away from a plain-English definition.",
   },
 ];
 
