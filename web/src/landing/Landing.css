@@ -116,7 +116,7 @@
   margin-bottom: 44px;
 }
 
-/* --- Feature cards (rounded widget style) --- */
+/* --- Feature cards --- */
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
@@ -124,62 +124,32 @@
 }
 
 .feature-card {
-  background: #131316;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 28px;
-  padding: 24px;
-  transition:
-    border-color 0.3s,
-    transform 0.3s var(--expand-ease);
+  background: var(--bg-card);
+  border: 1px solid var(--bg-card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.3s;
 }
 
 .feature-card:hover {
-  border-color: rgba(255, 255, 255, 0.14);
-  transform: translateY(-4px);
-}
-
-.feature-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-
-.feature-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary);
-}
-
-.feature-kicker {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  border-color: rgba(139, 92, 246, 0.35);
 }
 
 .feature-shot {
-  border-radius: 18px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--bg-card-border);
   background: #060606;
 }
 
 .feature-shot img {
   display: block;
   width: 100%;
-  height: 260px;
+  height: 280px;
   object-fit: cover;
   object-position: top center;
 }
 
 .feature-body {
-  padding: 22px 4px 4px;
+  padding: 24px 26px 28px;
 }
 
 .feature-body h3 {
