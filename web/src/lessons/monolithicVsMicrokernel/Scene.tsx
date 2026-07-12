@@ -59,7 +59,7 @@ function Ram({
 }) {
   const w = 168;
   return (
-    <motion.g animate={{ opacity: active ? 1 : 0.35 }} transition={{ duration: 0.4 }}>
+    <motion.g animate={{ opacity: active ? 1 : 0.5 }} transition={{ duration: 0.4 }}>
       {/* RAM stick outline with notch pins */}
       <motion.rect
         x={x}
@@ -122,7 +122,7 @@ function Ram({
               y={b.y + b.h / 2 + 4}
               textAnchor="middle"
               className="tiny-label"
-              fill={crashed ? "#f59e0b" : undefined}
+              fill={crashed ? "#f59e0b" : "var(--text-secondary)"}
             >
               {b.label}
             </text>
@@ -167,7 +167,7 @@ function Ram({
               y={b.y + b.h / 2 + 4}
               textAnchor="middle"
               className="tiny-label"
-              fill={crashed ? "#f59e0b" : undefined}
+              fill={crashed ? "#f59e0b" : "var(--text-secondary)"}
             >
               {b.label}
             </text>
@@ -277,7 +277,7 @@ export function Scene({ step }: SceneProps) {
               <motion.text
                 key="restart"
                 x={UX + 84}
-                y={148}
+                y={210}
                 textAnchor="middle"
                 className="tiny-label"
                 fill="#8b5cf6"
