@@ -1,18 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import type { KernelLessonStep, SceneState } from "./steps";
+import type { KernelLessonStep } from "./steps";
 
 interface SceneProps {
   step: KernelLessonStep;
 }
-
-const packetPosition: Record<SceneState, { y: number; opacity: number }> = {
-  idle: { y: 0, opacity: 0 },
-  "user-running": { y: 0, opacity: 0 },
-  trap: { y: 150, opacity: 1 },
-  "kernel-running": { y: 150, opacity: 0 },
-  return: { y: 0, opacity: 1 },
-  done: { y: 0, opacity: 0 },
-};
 
 export function Scene({ step }: SceneProps) {
   const { scene, activeSyscall } = step;
@@ -22,67 +13,64 @@ export function Scene({ step }: SceneProps) {
   return (
     <div className="scene">
       <div className="pane-title">CPU privilege levels</div>
-      <svg viewBox="0 0 480 340" className="scene-svg">
+      <svg viewBox="0 0 480 360" className="scene-svg">
         {/* User space */}
         <motion.rect
           x="20"
-          y="20"
+          y="16"
           width="440"
           height="120"
-          rx="10"
-          className="space user-space"
+          rx="14"
+          className="space"
           animate={{
-            stroke: userActive ? "#4ade80" : "#334155",
-            strokeWidth: userActive ? 2.5 : 1.5,
+            stroke: userActive ? "#ffffff" : "#1f1f1f",
+            strokeWidth: userActive ? 1.5 : 1,
           }}
         />
-        <text x="36" y="46" className="space-label user-label">
-          USER SPACE · ring 3 · restricted
+        <text x="40" y="40" className="space-label">
+          USER SPACE · RING 3 · RESTRICTED
+        </text>
+        <motion.circle
+          cx="250"
+          cy="35"
+          r="5"
+          className="cpu-dot"
+          animate={{ fill: userActive || scene === "trap" ? "#ffffff" : "#1a1a1a" }}
+        />
+        <text x="264" y="39" className="tiny-label">
+          CPU in user mode
         </text>
         <motion.rect
           x="40"
-          y="60"
+          y="56"
           width="150"
           height="60"
-          rx="8"
-          className="process-box"
-          animate={{ opacity: scene === "idle" ? 0.5 : 1 }}
+          rx="10"
+          className="node-box"
+          animate={{ opacity: scene === "idle" ? 0.45 : 1 }}
         />
-        <text x="60" y="95" className="box-label">
-          your app (main)
-        </text>
-        <motion.circle
-          cx="230"
-          cy="90"
-          r="7"
-          className="cpu-dot"
-          animate={{
-            fill: userActive || scene === "trap" ? "#4ade80" : "#1e293b",
-          }}
-        />
-        <text x="245" y="95" className="tiny-label">
-          CPU in user mode
+        <text x="115" y="90" textAnchor="middle" className="box-label">
+          your app · main()
         </text>
 
         {/* Boundary */}
-        <line x1="20" y1="170" x2="460" y2="170" className="boundary" />
-        <text x="330" y="163" className="boundary-label">
-          syscall boundary
+        <line x1="20" y1="180" x2="460" y2="180" className="boundary" />
+        <text x="460" y="170" textAnchor="end" className="boundary-label">
+          SYSCALL BOUNDARY
         </text>
+
+        {/* Syscall packet */}
         <AnimatePresence>
           {(scene === "trap" || scene === "return") && activeSyscall && (
             <motion.g
               key={`${scene}-${step.id}`}
-              initial={{ y: scene === "trap" ? 0 : 150, opacity: 0 }}
-              animate={{
-                y: packetPosition[scene].y,
-                opacity: packetPosition[scene].opacity,
-              }}
+              initial={{ y: scene === "trap" ? 0 : 96, opacity: 0 }}
+              animate={{ y: scene === "trap" ? 96 : 0, opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.2, ease: "easeInOut" }}
             >
-              <rect x="200" y="105" width="90" height="28" rx="14" className="syscall-pill" />
-              <text x="212" y="124" className="syscall-label">
+              <rect x="195" y="112" width="90" height="26" rx="13" className="syscall-pill" />
+              <text x="240" y="129" textAnchor="middle" className="syscall-label">
                 {scene === "trap" ? `${activeSyscall}()` : "return"}
               </text>
             </motion.g>
@@ -92,59 +80,59 @@ export function Scene({ step }: SceneProps) {
         {/* Kernel space */}
         <motion.rect
           x="20"
-          y="200"
+          y="224"
           width="440"
           height="120"
-          rx="10"
-          className="space kernel-space"
+          rx="14"
+          className="space"
           animate={{
-            stroke: kernelActive ? "#f472b6" : "#334155",
-            strokeWidth: kernelActive ? 2.5 : 1.5,
+            stroke: kernelActive ? "#ffffff" : "#1f1f1f",
+            strokeWidth: kernelActive ? 1.5 : 1,
           }}
         />
-        <text x="36" y="226" className="space-label kernel-label">
-          KERNEL SPACE · ring 0 · full hardware access
+        <text x="40" y="248" className="space-label">
+          KERNEL SPACE · RING 0 · FULL HARDWARE ACCESS
         </text>
         <motion.rect
           x="40"
-          y="240"
+          y="264"
           width="170"
           height="60"
-          rx="8"
-          className="kernel-box"
-          animate={{ opacity: kernelActive ? 1 : 0.55 }}
+          rx="10"
+          className="node-box"
+          animate={{ opacity: kernelActive ? 1 : 0.45 }}
         />
-        <text x="58" y="275" className="box-label">
-          kernel: VFS + driver
+        <text x="125" y="298" textAnchor="middle" className="box-label">
+          kernel · VFS + driver
         </text>
         <motion.rect
           x="330"
-          y="240"
+          y="264"
           width="110"
           height="60"
-          rx="8"
-          className="disk-box"
-          animate={{ opacity: kernelActive ? 1 : 0.45 }}
+          rx="10"
+          className="node-box"
+          animate={{ opacity: kernelActive ? 1 : 0.35 }}
         />
-        <text x="356" y="275" className="box-label">
+        <text x="385" y="298" textAnchor="middle" className="box-label">
           disk
         </text>
         <motion.line
           x1="210"
-          y1="270"
+          y1="294"
           x2="330"
-          y2="270"
+          y2="294"
           className="dma-line"
-          animate={{ opacity: kernelActive ? 1 : 0.2 }}
+          animate={{ opacity: kernelActive ? 0.9 : 0.15 }}
         />
         <motion.circle
-          cx="240"
-          cy="270"
-          r="7"
+          cx="250"
+          cy="336"
+          r="5"
           className="cpu-dot"
-          animate={{ fill: kernelActive ? "#f472b6" : "#1e293b" }}
+          animate={{ fill: kernelActive ? "#ffffff" : "#1a1a1a" }}
         />
-        <text x="255" y="275" className="tiny-label">
+        <text x="264" y="340" className="tiny-label">
           CPU in kernel mode
         </text>
       </svg>

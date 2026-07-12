@@ -1,3 +1,5 @@
+import { tokenizeC } from "./highlight";
+
 interface CodePaneProps {
   code: string;
   highlightedLines: number[];
@@ -15,7 +17,14 @@ export function CodePane({ code, highlightedLines }: CodePaneProps) {
           return (
             <div key={lineNo} className={`code-line${active ? " active" : ""}`}>
               <span className="line-no">{lineNo}</span>
-              <span>{line || " "}</span>
+              <span>
+                {tokenizeC(line).map((t, j) => (
+                  <span key={j} className={`tok-${t.type}`}>
+                    {t.value}
+                  </span>
+                ))}
+                {line === "" && " "}
+              </span>
             </div>
           );
         })}
