@@ -22,12 +22,13 @@ export function Sidebar({ selectedLessonId, onSelect }: SidebarProps) {
             {chapter.lessons.map((lesson) => (
               <li key={lesson.id}>
                 <button
-                  className={`lesson-link${lesson.id === selectedLessonId ? " selected" : ""}`}
+                  className={`lesson-link${lesson.id === selectedLessonId ? " selected" : ""}${lesson.kind === "summary" ? " recap" : ""}`}
                   disabled={lesson.status === "coming-soon"}
                   onClick={() => onSelect(lesson)}
                   title={lesson.description}
                 >
                   {lesson.title}
+                  {lesson.kind === "summary" && <span className="soon recap-tag">recap</span>}
                   {lesson.status === "coming-soon" && <span className="soon">soon</span>}
                 </button>
               </li>

@@ -22,6 +22,8 @@ export interface Lesson {
   title: string;
   description: string;
   status: "available" | "coming-soon";
+  /** "summary" entries render as a blog-style chapter recap instead of an animated lesson. */
+  kind?: "lesson" | "summary";
 }
 
 export interface Chapter {
