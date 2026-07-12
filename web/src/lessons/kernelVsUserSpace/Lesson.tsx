@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { CodePane } from "../../components/CodePane";
 import { useNarration } from "../../narration/useNarration";
@@ -84,7 +85,17 @@ export function KernelVsUserSpaceLesson({ language }: LessonProps) {
         <span className="step-indicator">
           {stepIndex + 1} / {steps.length}
         </span>
-        <p>{caption}</p>
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={step.id}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.25 }}
+          >
+            {caption}
+          </motion.p>
+        </AnimatePresence>
       </footer>
     </div>
   );
