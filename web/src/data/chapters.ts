@@ -23,7 +23,7 @@ export const chapters: Chapter[] = [
         id: "interrupts",
         title: "Interrupts",
         description: "Hardware signals the CPU to handle immediate events.",
-        status: "coming-soon",
+        status: "available",
       },
       {
         id: "monolithic-vs-microkernel",

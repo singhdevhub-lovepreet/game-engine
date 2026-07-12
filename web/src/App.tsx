@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { Sidebar } from "./components/Sidebar";
+import { InterruptsLesson } from "./lessons/interrupts/Lesson";
 import { KernelVsUserSpaceLesson } from "./lessons/kernelVsUserSpace/Lesson";
 import { SystemCallsLesson } from "./lessons/systemCalls/Lesson";
 import type { Language, Lesson } from "./types";
@@ -30,6 +31,7 @@ export default function App() {
           <KernelVsUserSpaceLesson language={language} />
         )}
         {lessonId === "system-calls" && <SystemCallsLesson language={language} />}
+        {lessonId === "interrupts" && <InterruptsLesson language={language} />}
       </main>
     </div>
   );
