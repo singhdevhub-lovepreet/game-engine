@@ -25,8 +25,8 @@
   --accent-2: #f59e0b;
   --accent-grad: linear-gradient(
     90deg,
-    rgba(139, 92, 246, 0.16),
-    rgba(139, 92, 246, 0.04) 60%,
+    rgba(139, 92, 246, 0.08),
+    rgba(139, 92, 246, 0.02) 60%,
     transparent
   );
 
@@ -56,7 +56,7 @@ body {
 /* --- Scrollbars --- */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(139, 92, 246, 0.55) transparent;
+  scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
 }
 
 ::-webkit-scrollbar {
@@ -69,16 +69,16 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(139, 92, 246, 0.7), rgba(139, 92, 246, 0.35));
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.4), rgba(139, 92, 246, 0.2));
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-  background: linear-gradient(90deg, rgba(139, 92, 246, 0.7), rgba(139, 92, 246, 0.35));
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.4), rgba(139, 92, 246, 0.2));
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.85);
+  background: rgba(139, 92, 246, 0.55);
 }
 
 ::-webkit-scrollbar-corner {
@@ -433,7 +433,7 @@ main {
 }
 
 .syscall-pill {
-  fill: var(--accent-2);
+  fill: rgba(245, 158, 11, 0.8);
 }
 
 .syscall-label {
@@ -491,12 +491,12 @@ main {
   background:
     linear-gradient(
       90deg,
-      rgba(139, 92, 246, 0.1),
-      rgba(139, 92, 246, 0.02) 45%,
+      rgba(139, 92, 246, 0.05),
+      rgba(139, 92, 246, 0.01) 45%,
       transparent
     ),
     var(--bg-surface);
-  border: 1px solid rgba(139, 92, 246, 0.25);
+  border: 1px solid rgba(139, 92, 246, 0.14);
   border-radius: var(--radius-md);
   padding: 14px 18px;
   min-height: 60px;
