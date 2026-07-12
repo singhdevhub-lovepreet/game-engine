@@ -21,6 +21,15 @@
   --radius-lg: 20px;
   --radius-full: 999px;
 
+  --accent: #8b5cf6;
+  --accent-2: #f59e0b;
+  --accent-grad: linear-gradient(
+    90deg,
+    rgba(139, 92, 246, 0.16),
+    rgba(139, 92, 246, 0.04) 60%,
+    transparent
+  );
+
   --expand-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -287,8 +296,8 @@ main {
 }
 
 .code-line.active {
-  background: rgba(255, 255, 255, 0.06);
-  border-left-color: var(--text-primary);
+  background: var(--accent-grad);
+  border-left-color: var(--accent);
 }
 
 /* Syntax highlighting */
@@ -392,11 +401,11 @@ main {
 }
 
 .syscall-pill {
-  fill: var(--text-primary);
+  fill: var(--accent-2);
 }
 
 .syscall-label {
-  fill: var(--bg-primary);
+  fill: #140a00;
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: 700;
@@ -435,7 +444,11 @@ main {
 
 .notes-pane li.active {
   color: var(--text-primary);
-  border-left-color: var(--text-primary);
+  border-left-color: var(--accent);
+  background: var(--accent-grad);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 /* --- Caption bar --- */
@@ -443,8 +456,15 @@ main {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: var(--bg-surface);
-  border: 1px solid var(--bg-card-border);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(139, 92, 246, 0.1),
+      rgba(139, 92, 246, 0.02) 45%,
+      transparent
+    ),
+    var(--bg-surface);
+  border: 1px solid rgba(139, 92, 246, 0.25);
   border-radius: var(--radius-md);
   padding: 14px 18px;
   min-height: 60px;

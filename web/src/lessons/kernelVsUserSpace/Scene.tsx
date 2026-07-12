@@ -14,6 +14,16 @@ export function Scene({ step }: SceneProps) {
     <div className="scene">
       <div className="pane-title">CPU privilege levels</div>
       <svg viewBox="0 0 480 360" className="scene-svg">
+        <defs>
+          <linearGradient id="userGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(139, 92, 246, 0.14)" />
+            <stop offset="100%" stopColor="rgba(139, 92, 246, 0.02)" />
+          </linearGradient>
+          <linearGradient id="kernelGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="rgba(245, 158, 11, 0.13)" />
+            <stop offset="100%" stopColor="rgba(245, 158, 11, 0.02)" />
+          </linearGradient>
+        </defs>
         {/* User space */}
         <motion.rect
           x="20"
@@ -23,9 +33,18 @@ export function Scene({ step }: SceneProps) {
           rx="14"
           className="space"
           animate={{
-            stroke: userActive ? "#ffffff" : "#1f1f1f",
+            stroke: userActive ? "#8b5cf6" : "#1f1f1f",
             strokeWidth: userActive ? 1.5 : 1,
           }}
+        />
+        <motion.rect
+          x="20"
+          y="16"
+          width="440"
+          height="120"
+          rx="14"
+          fill="url(#userGrad)"
+          animate={{ opacity: userActive ? 1 : 0 }}
         />
         <text x="40" y="40" className="space-label">
           USER SPACE · RING 3 · RESTRICTED
@@ -35,7 +54,7 @@ export function Scene({ step }: SceneProps) {
           cy="35"
           r="5"
           className="cpu-dot"
-          animate={{ fill: userActive || scene === "trap" ? "#ffffff" : "#1a1a1a" }}
+          animate={{ fill: userActive || scene === "trap" ? "#8b5cf6" : "#1a1a1a" }}
         />
         <text x="264" y="39" className="tiny-label">
           CPU in user mode
@@ -86,9 +105,18 @@ export function Scene({ step }: SceneProps) {
           rx="14"
           className="space"
           animate={{
-            stroke: kernelActive ? "#ffffff" : "#1f1f1f",
+            stroke: kernelActive ? "#f59e0b" : "#1f1f1f",
             strokeWidth: kernelActive ? 1.5 : 1,
           }}
+        />
+        <motion.rect
+          x="20"
+          y="224"
+          width="440"
+          height="120"
+          rx="14"
+          fill="url(#kernelGrad)"
+          animate={{ opacity: kernelActive ? 1 : 0 }}
         />
         <text x="40" y="248" className="space-label">
           KERNEL SPACE · RING 0 · FULL HARDWARE ACCESS
@@ -130,7 +158,7 @@ export function Scene({ step }: SceneProps) {
           cy="336"
           r="5"
           className="cpu-dot"
-          animate={{ fill: kernelActive ? "#ffffff" : "#1a1a1a" }}
+          animate={{ fill: kernelActive ? "#f59e0b" : "#1a1a1a" }}
         />
         <text x="264" y="340" className="tiny-label">
           CPU in kernel mode
