@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Sidebar } from "./components/Sidebar";
 import { KernelVsUserSpaceLesson } from "./lessons/kernelVsUserSpace/Lesson";
+import { SystemCallsLesson } from "./lessons/systemCalls/Lesson";
 import type { Language, Lesson } from "./types";
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
         {lessonId === "kernel-vs-user-space" && (
           <KernelVsUserSpaceLesson language={language} />
         )}
+        {lessonId === "system-calls" && <SystemCallsLesson language={language} />}
       </main>
     </div>
   );

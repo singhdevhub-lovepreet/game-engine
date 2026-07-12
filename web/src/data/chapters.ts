@@ -17,7 +17,7 @@ export const chapters: Chapter[] = [
         id: "system-calls",
         title: "System Calls",
         description: "How read(), write(), fork(), exec() trap into the kernel.",
-        status: "coming-soon",
+        status: "available",
       },
       {
         id: "interrupts",
