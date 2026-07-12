@@ -14,7 +14,7 @@ export const tracks: Track[] = [
     id: "transformers",
     label: "Transformers",
     tagline: "Transformers from first principles — attention, encoders, decoders",
-    defaultLessonId: "self-attention",
+    defaultLessonId: "words-to-vectors",
     chapters: transformerChapters,
   },
 ];

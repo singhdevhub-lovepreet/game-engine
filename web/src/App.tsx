@@ -5,8 +5,11 @@ import { tracks } from "./data/tracks";
 import { InterruptsLesson } from "./lessons/interrupts/Lesson";
 import { KernelVsUserSpaceLesson } from "./lessons/kernelVsUserSpace/Lesson";
 import { MonolithicVsMicrokernelLesson } from "./lessons/monolithicVsMicrokernel/Lesson";
+import { PositionalEncodingsLesson } from "./lessons/positionalEncodings/Lesson";
 import { SelfAttentionLesson } from "./lessons/selfAttention/Lesson";
 import { SystemCallsLesson } from "./lessons/systemCalls/Lesson";
+import { VectorSpaceLesson } from "./lessons/vectorSpace/Lesson";
+import { WordsToVectorsLesson } from "./lessons/wordsToVectors/Lesson";
 import { SummaryPage } from "./summaries/SummaryPage";
 import { osBasicsSummary } from "./summaries/osBasics";
 import type { Lesson, Track } from "./types";
@@ -43,6 +46,9 @@ export default function App() {
         {lessonId === "os-basics-summary" && (
           <SummaryPage summary={osBasicsSummary} />
         )}
+        {lessonId === "words-to-vectors" && <WordsToVectorsLesson />}
+        {lessonId === "vector-space-similarity" && <VectorSpaceLesson />}
+        {lessonId === "positional-encodings" && <PositionalEncodingsLesson />}
         {lessonId === "self-attention" && <SelfAttentionLesson />}
       </main>
     </div>

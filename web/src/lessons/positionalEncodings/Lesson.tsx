@@ -8,7 +8,7 @@ import { glossaryIds, pyCode, steps } from "./steps";
 
 const STEP_MS = 7000;
 
-export function SelfAttentionLesson() {
+export function PositionalEncodingsLesson() {
   const [stepIndex, setStepIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const { caption, speak } = useNarration();
@@ -40,8 +40,8 @@ export function SelfAttentionLesson() {
     <div className="lesson">
       <header className="lesson-header">
         <div>
-          <h2>Self-Attention</h2>
-          <p>Chapter 2 · Attention</p>
+          <h2>Positional Encodings</h2>
+          <p>Chapter 1 · Foundations: Words as Vectors</p>
         </div>
         <div className="controls">
           <button onClick={() => goto(stepIndex - 1)} disabled={stepIndex === 0}>
@@ -64,7 +64,7 @@ export function SelfAttentionLesson() {
           code={pyCode}
           highlightedLines={step.codeLines}
           language="python"
-          title="self_attention.py"
+          title="positional.py"
         />
         <Scene step={step} />
         <aside className="notes-pane">

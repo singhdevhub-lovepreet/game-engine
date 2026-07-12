@@ -6,8 +6,36 @@ import type { Chapter } from "../types";
  */
 export const transformerChapters: Chapter[] = [
   {
-    id: "attention",
+    id: "foundations",
     number: 1,
+    title: "Foundations: Words as Vectors",
+    lessons: [
+      {
+        id: "words-to-vectors",
+        title: "Words → Vectors",
+        description:
+          "Tokenization, the embedding table, and the models that learn it.",
+        status: "available",
+      },
+      {
+        id: "vector-space-similarity",
+        title: "Vector Space & Similarity",
+        description:
+          "Plotting words in space; dot product as a closeness measure.",
+        status: "available",
+      },
+      {
+        id: "positional-encodings",
+        title: "Positional Encodings",
+        description:
+          "sin/cos waves that stamp a position onto every embedding.",
+        status: "available",
+      },
+    ],
+  },
+  {
+    id: "attention",
+    number: 2,
     title: "Attention",
     crucial: true,
     lessons: [
@@ -52,15 +80,9 @@ export const transformerChapters: Chapter[] = [
   },
   {
     id: "positions-and-cross-attention",
-    number: 2,
-    title: "Positions & Cross Attention",
+    number: 3,
+    title: "Cross Attention & Decoders",
     lessons: [
-      {
-        id: "positional-encodings",
-        title: "Positional Encodings",
-        description: "sin/cos pairs that tell attention where each token sits.",
-        status: "coming-soon",
-      },
       {
         id: "cross-attention",
         title: "Cross Attention",
@@ -77,7 +99,7 @@ export const transformerChapters: Chapter[] = [
   },
   {
     id: "norms-and-inference",
-    number: 3,
+    number: 4,
     title: "Normalization & Inference",
     lessons: [
       {

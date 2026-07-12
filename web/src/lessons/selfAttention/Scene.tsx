@@ -23,9 +23,15 @@ const GRID_X = 66;
 const GRID_Y = 236;
 const CELL = 20;
 
+const RAW_SCORES = ["2.1", "9.4", "0.8", "2.1", "8.1"];
+
 export function Scene({ step }: SceneProps) {
   const { scene } = step;
   const showEmbeddings = scene !== "tokens";
+  const embedFocus = scene === "embed-one";
+  const dotTwo = scene === "dot-two";
+  const rawRow = scene === "raw-row" || scene === "raw-problem";
+  const rawProblem = scene === "raw-problem";
   const showW = scene === "projections" || scene === "qkv";
   const showChips =
     scene === "qkv" || scene === "scores" || scene === "scale" || scene === "softmax";
@@ -33,7 +39,7 @@ export function Scene({ step }: SceneProps) {
     scene === "scores" || scene === "scale" || scene === "softmax" || scene === "mix" || scene === "matrix";
   const heat = scene === "softmax" || scene === "mix" || scene === "matrix";
   const bankRowActive = scene === "softmax" || scene === "mix";
-  const riverHot = scene === "scores" || scene === "scale" || heat;
+  const riverHot = dotTwo || rawRow || scene === "scores" || scene === "scale" || heat;
   const showMix = scene === "mix" || scene === "done";
   const showFormula = scene === "matrix" || scene === "done";
 
@@ -90,42 +96,143 @@ export function Scene({ step }: SceneProps) {
           {showEmbeddings && (
             <motion.g
               initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: scene === "embeddings" ? 1 : 0.45, y: 0 }}
+              animate={{ opacity: embedFocus || dotTwo || rawRow ? 1 : 0.45, y: 0 }}
               exit={{ opacity: 0 }}
             >
-              {TOKENS.map((_, i) => (
+              {TOKENS.map((_, i) => {
+                const focused =
+                  (embedFocus && i === 1) || (dotTwo && (i === 1 || i === 4));
+                const dimmed = (embedFocus || dotTwo) && !focused;
+                return (
+                  <g key={i} opacity={dimmed ? 0.3 : 1}>
+                    <line
+                      x1={tokenCx(i)}
+                      y1={44}
+                      x2={tokenCx(i)}
+                      y2={56}
+                      className="dma-line"
+                      opacity={0.5}
+                    />
+                    {[0, 1, 2, 3].map((j) => (
+                      <rect
+                        key={j}
+                        x={tokenCx(i) - 7}
+                        y={58 + j * 11}
+                        width={14}
+                        height={9}
+                        rx={2}
+                        fill={
+                          i === 1
+                            ? "rgba(139, 92, 246, 0.28)"
+                            : i === 4 && (dotTwo || rawRow)
+                              ? "rgba(245, 158, 11, 0.22)"
+                              : "rgba(139, 92, 246, 0.12)"
+                        }
+                        stroke={focused ? "#3a3a3a" : "#1f1f1f"}
+                      />
+                    ))}
+                  </g>
+                );
+              })}
+              {embedFocus && (
+                <text x={240} y={124} textAnchor="middle" className="tiny-label">
+                  e(bank) = [0.9, −0.3, 0.4, …] — one word, one fixed vector
+                </text>
+              )}
+            </motion.g>
+          )}
+        </AnimatePresence>
+
+        {/* Dot product of two embeddings */}
+        <AnimatePresence>
+          {dotTwo && (
+            <motion.g
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              <path
+                d={`M ${tokenCx(1)} 104 C ${tokenCx(1)} 150, ${tokenCx(4)} 150, ${tokenCx(4)} 104`}
+                fill="none"
+                className="dma-line"
+                opacity={0.8}
+              />
+              <rect x={140} y={140} width={200} height={54} rx={10} className="node-box" />
+              <text x={240} y={162} textAnchor="middle" className="box-label">
+                e(bank) · e(river) = 8.1
+              </text>
+              <text x={240} y={181} textAnchor="middle" className="tiny-label">
+                multiply element-wise, add up → one similarity score
+              </text>
+            </motion.g>
+          )}
+        </AnimatePresence>
+
+        {/* Raw score row: bank vs every word */}
+        <AnimatePresence>
+          {rawRow && (
+            <motion.g
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              <text x={240} y={136} textAnchor="middle" className="box-label">
+                bank · every word
+              </text>
+              {RAW_SCORES.map((s, i) => (
                 <g key={i}>
                   <line
                     x1={tokenCx(i)}
-                    y1={44}
+                    y1={104}
                     x2={tokenCx(i)}
-                    y2={56}
+                    y2={146}
                     className="dma-line"
-                    opacity={0.5}
+                    opacity={0.35}
                   />
-                  {[0, 1, 2, 3].map((j) => (
-                    <rect
-                      key={j}
-                      x={tokenCx(i) - 7}
-                      y={58 + j * 11}
-                      width={14}
-                      height={9}
-                      rx={2}
-                      fill={
-                        i === 1 || i === 3
-                          ? "rgba(139, 92, 246, 0.22)"
-                          : "rgba(139, 92, 246, 0.12)"
-                      }
-                      stroke="#1f1f1f"
-                    />
-                  ))}
+                  <rect
+                    x={tokenCx(i) - 22}
+                    y={148}
+                    width={44}
+                    height={24}
+                    rx={6}
+                    className="node-box"
+                    stroke={i === 4 ? "rgba(245, 158, 11, 0.55)" : i === 1 ? "rgba(139, 92, 246, 0.5)" : "#2a2a2a"}
+                  />
+                  <text x={tokenCx(i)} y={164} textAnchor="middle" className="tiny-label">
+                    {s}
+                  </text>
                 </g>
               ))}
-              {scene === "embeddings" && (
-                <text x={240} y={118} textAnchor="middle" className="tiny-label">
-                  same vector for both "the" — and for every "bank" anywhere
+              {!rawProblem && (
+                <text x={240} y={194} textAnchor="middle" className="tiny-label">
+                  we could already mix neighbours with these — raw attention
                 </text>
               )}
+            </motion.g>
+          )}
+        </AnimatePresence>
+
+        {/* Why raw embeddings are not enough */}
+        <AnimatePresence>
+          {rawProblem && (
+            <motion.g
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              <rect x={90} y={196} width={300} height={112} rx={12} className="node-box" stroke="rgba(245, 158, 11, 0.4)" />
+              <text x={240} y={220} textAnchor="middle" className="box-label">
+                one embedding is not enough
+              </text>
+              <text x={110} y={244} className="tiny-label">
+                ✗ same vector must ask, advertise, and give
+              </text>
+              <text x={110} y={264} className="tiny-label">
+                ✗ x · xᵀ is symmetric — bank→river ≡ river→bank
+              </text>
+              <text x={110} y={284} className="tiny-label">
+                ✗ no parameters — nothing for training to improve
+              </text>
             </motion.g>
           )}
         </AnimatePresence>
