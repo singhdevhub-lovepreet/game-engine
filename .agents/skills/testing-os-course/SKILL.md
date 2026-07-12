@@ -22,6 +22,15 @@ description: Test the interactive OS course React app (web/) end-to-end. Use whe
 3b. All visible text is English-only (the Hindi text feature and topbar language select were removed; Hindi may return only as future voice-over audio via `narration/provider.ts`). If bilingual `{ en, hi }` objects reappear in `steps.ts`/`glossary.ts`/`summaries`, assert against the intended design first — a `[object Object]` render means a string/record type mismatch.
 4. Zoom screenshots of the code+scene region make the best evidence.
 
+## Interactive controls (sliders, hover-to-inspect)
+- Some scenes have TensorTonic-style interactivity: e.g. Positional Encodings heatmap step exposes "positions"/"dimensions" range sliders (`.scene-controls` above the SVG) and per-cell hover that draws the underlying wave + a `PE(pos, dN) = value` readout; the Self-Attention weight matrix shows `A[row → col] = w` on hover (softmax steps onward only).
+- Test sliders by dragging to both extremes and asserting the grid re-renders with the exact new row/column counts and axis labels — a broken binding leaves the old grid.
+- Test hover by comparing the displayed value against the source data (`WEIGHTS` array or the `pe()` formula) — the number must be recomputable, not just present.
+- Assert the controls/hover readouts are ABSENT on steps/scenes where they shouldn't render (regression for the visibility gating).
+- Hover state is React state, not CSS: move the mouse fully off the SVG group and assert captions revert to their defaults.
+- Low-frequency dimensions produce a nearly flat inspected wave — that is mathematically correct, not a bug.
+- To hover a specific cell, compute its coordinates from the grid constants in `Scene.tsx` (e.g. `GRID_X/GRID_Y/CELL` or `HEAT_X/HEAT_Y` + cell size), then verify via the on-screen readout which cell you actually hit — small cells make off-by-one hits common.
+
 ## Pitfalls / gotchas
 - Autoplay might already be running when you arrive on a lesson (or a stray click can start it) — the "Play" button toggles to "Pause"; pause before stepping manually, then press "← Prev" repeatedly to reset to step 1.
 - The caption text can lag the step indicator ~1s after clicking Next (async narration hook). Wait a beat before asserting caption text, or you may capture the previous step's caption.
