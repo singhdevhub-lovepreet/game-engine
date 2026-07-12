@@ -6,6 +6,7 @@ import { tracks } from "./data/tracks";
 import { InterruptsLesson } from "./lessons/interrupts/Lesson";
 import { KernelVsUserSpaceLesson } from "./lessons/kernelVsUserSpace/Lesson";
 import { MonolithicVsMicrokernelLesson } from "./lessons/monolithicVsMicrokernel/Lesson";
+import { MultiHeadAttentionLesson } from "./lessons/multiHeadAttention/Lesson";
 import { PositionalEncodingsLesson } from "./lessons/positionalEncodings/Lesson";
 import { SelfAttentionLesson } from "./lessons/selfAttention/Lesson";
 import { SystemCallsLesson } from "./lessons/systemCalls/Lesson";
@@ -56,6 +57,7 @@ export default function App() {
         {lessonId === "vector-space-similarity" && <VectorSpaceLesson />}
         {lessonId === "positional-encodings" && <PositionalEncodingsLesson />}
         {lessonId === "self-attention" && <SelfAttentionLesson />}
+        {lessonId === "multi-head-attention" && <MultiHeadAttentionLesson />}
       </main>
     </div>
   );

@@ -323,4 +323,34 @@ export const glossary: Record<string, GlossaryTerm> = {
     full: "Contextual embedding",
     definition: "The output of attention for a token: a new vector built as a weighted mix of the value vectors of all tokens. Unlike the static input embedding, 'bank' now carries river-ness baked in from its context.",
   },
+  "attention-head": {
+    id: "attention-head",
+    term: "head",
+    full: "Attention head",
+    definition: "One independent copy of the attention mechanism, with its own learned Wq, Wk, Wv. Several heads run in parallel on the same sentence, and training lets each one specialise — one head may track word sense, another grammar, another nearby words.",
+  },
+  "d-model": {
+    id: "d-model",
+    term: "d_model",
+    full: "Model dimension",
+    definition: "The length of every token's embedding vector as it flows through the transformer — 512 in the original paper. Multi-head attention splits these d_model dimensions across the heads: with 8 heads, each head works in a slice of d_model / 8 = 64 dimensions.",
+  },
+  concat: {
+    id: "concat",
+    term: "concat",
+    full: "Concatenation",
+    definition: "Gluing vectors side by side into one longer vector. After the heads finish, their per-token outputs (64 numbers each) are concatenated back into one d_model-sized vector — 8 × 64 = 512. No mixing happens yet; the slices just sit next to each other.",
+  },
+  "output-projection": {
+    id: "output-projection",
+    term: "Wo",
+    full: "Output projection matrix",
+    definition: "A final learned d_model × d_model matrix applied after concatenation. It blends the heads' separate findings into one coherent vector — it can amplify one head, mute another, or combine them. Without Wo the heads' slices would never interact.",
+  },
+  "multi-head-attention": {
+    id: "multi-head-attention",
+    term: "multi-head attention",
+    full: "Multi-head attention",
+    definition: "The full mechanism: split the embedding dimensions across h parallel attention heads, run each head independently, concatenate their outputs, and mix with Wo. Captures several different relationships at once for roughly the cost of a single big head.",
+  },
 };
