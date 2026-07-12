@@ -1,18 +1,38 @@
-import { chapters } from "../data/chapters";
-import type { Lesson } from "../types";
+import { tracks } from "../data/tracks";
+import type { Lesson, Track } from "../types";
 
 interface SidebarProps {
+  selectedTrackId: string;
   selectedLessonId: string;
+  onSelectTrack: (track: Track) => void;
   onSelect: (lesson: Lesson) => void;
 }
 
-export function Sidebar({ selectedLessonId, onSelect }: SidebarProps) {
+export function Sidebar({
+  selectedTrackId,
+  selectedLessonId,
+  onSelectTrack,
+  onSelect,
+}: SidebarProps) {
+  const track = tracks.find((t) => t.id === selectedTrackId) ?? tracks[0];
   return (
     <nav className="sidebar">
       <h1 className="logo">
-        OS<span>/first-principles</span>
+        {track.label}
+        <span>/first-principles</span>
       </h1>
-      {chapters.map((chapter) => (
+      <div className="track-tabs">
+        {tracks.map((t) => (
+          <button
+            key={t.id}
+            className={`track-tab${t.id === selectedTrackId ? " selected" : ""}`}
+            onClick={() => onSelectTrack(t)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {track.chapters.map((chapter) => (
         <div key={chapter.id} className="chapter">
           <div className="chapter-title">
             {chapter.number}. {chapter.title}

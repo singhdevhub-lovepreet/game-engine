@@ -1,15 +1,23 @@
-import { tokenizeC } from "./highlight";
+import { tokenizeC, tokenizePython } from "./highlight";
 
 interface CodePaneProps {
   code: string;
   highlightedLines: number[];
+  language?: "c" | "python";
+  title?: string;
 }
 
-export function CodePane({ code, highlightedLines }: CodePaneProps) {
+export function CodePane({
+  code,
+  highlightedLines,
+  language = "c",
+  title,
+}: CodePaneProps) {
   const lines = code.split("\n");
+  const tokenize = language === "python" ? tokenizePython : tokenizeC;
   return (
     <div className="code-pane">
-      <div className="pane-title">program.c</div>
+      <div className="pane-title">{title ?? (language === "python" ? "attention.py" : "program.c")}</div>
       <pre>
         {lines.map((line, i) => {
           const lineNo = i + 1;
@@ -18,7 +26,7 @@ export function CodePane({ code, highlightedLines }: CodePaneProps) {
             <div key={lineNo} className={`code-line${active ? " active" : ""}`}>
               <span className="line-no">{lineNo}</span>
               <span>
-                {tokenizeC(line).map((t, j) => (
+                {tokenize(line).map((t, j) => (
                   <span key={j} className={`tok-${t.type}`}>
                     {t.value}
                   </span>

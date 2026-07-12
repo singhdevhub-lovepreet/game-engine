@@ -34,3 +34,15 @@ export interface Chapter {
   crucial?: boolean;
   lessons: Lesson[];
 }
+
+/** A top-level course (e.g. OS, Transformers) with its own chapter roadmap. */
+export interface Track {
+  id: string;
+  /** Short name shown on the track tab, e.g. "OS". */
+  label: string;
+  /** Logo suffix, e.g. "/first-principles". */
+  tagline: string;
+  /** Lesson selected when switching to this track. */
+  defaultLessonId: string;
+  chapters: Chapter[];
+}
