@@ -31,6 +31,13 @@ export const chapters: Chapter[] = [
         description: "Linux vs. QNX architecture at a glance.",
         status: "available",
       },
+      {
+        id: "os-basics-summary",
+        title: "Chapter Recap",
+        description: "Blog-style summary of everything in Chapter 1.",
+        status: "available",
+        kind: "summary",
+      },
     ],
   },
   {

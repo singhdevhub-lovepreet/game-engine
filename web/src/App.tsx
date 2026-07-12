@@ -5,6 +5,8 @@ import { InterruptsLesson } from "./lessons/interrupts/Lesson";
 import { KernelVsUserSpaceLesson } from "./lessons/kernelVsUserSpace/Lesson";
 import { MonolithicVsMicrokernelLesson } from "./lessons/monolithicVsMicrokernel/Lesson";
 import { SystemCallsLesson } from "./lessons/systemCalls/Lesson";
+import { SummaryPage } from "./summaries/SummaryPage";
+import { osBasicsSummary } from "./summaries/osBasics";
 import type { Language, Lesson } from "./types";
 
 export default function App() {
@@ -35,6 +37,9 @@ export default function App() {
         {lessonId === "interrupts" && <InterruptsLesson language={language} />}
         {lessonId === "monolithic-vs-microkernel" && (
           <MonolithicVsMicrokernelLesson language={language} />
+        )}
+        {lessonId === "os-basics-summary" && (
+          <SummaryPage summary={osBasicsSummary} language={language} />
         )}
       </main>
     </div>
