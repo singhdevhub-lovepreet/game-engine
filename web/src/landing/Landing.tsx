@@ -38,20 +38,24 @@ const FEATURES = [
 
 const SKILLS = [
   {
-    title: "Operating Systems",
-    text: "Kernels, syscalls, interrupts, scheduling, memory — the layer every interview digs into.",
+    title: "First Principles",
+    text: "Every topic starts at its smallest idea and is rebuilt step by step — no leaps of faith.",
   },
   {
-    title: "Transformers",
-    text: "Embeddings, attention, encoders and decoders — built up from the dot product.",
-  },
-  {
-    title: "Systems Intuition",
+    title: "Intuition",
     text: "You don't memorize diagrams. You watch them happen, so you can re-derive them.",
   },
   {
-    title: "Interview Fluency",
-    text: "Chapter recaps and quickfire Q&A turn every section into interview-ready answers.",
+    title: "Animations",
+    text: "Concepts drawn live, frame by frame, synced to the exact line of code that causes them.",
+  },
+  {
+    title: "Theory",
+    text: "Blog-style chapter recaps and a jargon decoder give you the depth behind every visual.",
+  },
+  {
+    title: "Interview Questions",
+    text: "Quickfire Q&A at the end of every section turns understanding into interview-ready answers.",
   },
 ];
 
@@ -89,9 +93,9 @@ export function Landing({ onEnter }: LandingProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          Operating systems and transformers taught the way you actually
-          understand them — one small visual step at a time, with the code that
-          makes it real.
+          Computer science taught the way you actually understand it — one
+          small visual step at a time, with the code that makes it real.
+          Operating systems and transformers are just the first on the plate.
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
